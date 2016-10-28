@@ -1,0 +1,181 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        09/09/2015  10:50:48  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE Digital_Tube.obj TO Digital_Tube RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  Digital_Tube.obj (DIGITAL_TUBE)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?COPY)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?SIDIV)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  Digital_Tube (DIGITAL_TUBE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000EH     UNIT         _DATA_GROUP_
+            IDATA   0016H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0181H     UNIT         ?C?LIB_CODE
+            CODE    0184H     0161H     UNIT         ?PR?MAIN?DIGITAL_TUBE
+            CODE    02E5H     002BH     UNIT         ?PR?_DELAY_NMS?DIGITAL_TUBE
+            CODE    0310H     0018H     UNIT         ?CO?DIGITAL_TUBE
+            CODE    0328H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   Digital_Tube (DIGITAL_TUBE)
+
+
+SEGMENT                               DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH
+---------------------------------------------------
+?C_C51STARTUP                       -----    -----
+  +--> ?PR?MAIN?DIGITAL_TUBE
+
+?PR?MAIN?DIGITAL_TUBE               0008H    000EH
+  +--> ?CO?DIGITAL_TUBE
+  +--> ?PR?_DELAY_NMS?DIGITAL_TUBE
+
+
+
+SYMBOL TABLE OF MODULE:  Digital_Tube (DIGITAL_TUBE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DIGITAL_TUBE
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/09/2015  10:50:48  PAGE 2
+
+
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:0310H         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0184H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:02EAH         PUBLIC        _delay_nms
+  C:0320H         SYMBOL        _?ix1000
+  D:00C8H         PUBLIC        T2CON
+  B:00A0H.2       PUBLIC        HC138A
+  B:00A0H.3       PUBLIC        HC138B
+  B:00A0H.4       PUBLIC        HC138C
+  D:00D0H         PUBLIC        PSW
+  C:02E5H         SYMBOL        L?0020
+  -------         PROC          L?0019
+  -------         ENDPROC       L?0019
+  C:02E5H         SYMBOL        L?0020
+  -------         PROC          _DELAY_NMS
+  D:0006H         SYMBOL        n
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:02EAH         LINE#         27
+  C:02EAH         LINE#         28
+  C:02EAH         LINE#         30
+  C:02FAH         LINE#         31
+  C:02FAH         LINE#         32
+  C:0308H         LINE#         33
+  C:030FH         LINE#         34
+  -------         ENDPROC       _DELAY_NMS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        count
+  D:000AH         SYMBOL        High
+  D:000CH         SYMBOL        Low
+  D:000EH         SYMBOL        LED_Out
+  -------         ENDDO         
+  C:0184H         LINE#         41
+  C:0184H         LINE#         42
+  C:0184H         LINE#         45
+  C:018AH         LINE#         46
+  C:0193H         LINE#         47
+  C:01A4H         LINE#         49
+  C:01A4H         LINE#         50
+  C:01A4H         LINE#         51
+  C:01B1H         LINE#         52
+  C:01B1H         LINE#         53
+  C:01B9H         LINE#         54
+  C:01BEH         LINE#         55
+  C:01BEH         LINE#         57
+  C:01CBH         LINE#         58
+  C:01DFH         LINE#         59
+  C:01F3H         LINE#         60
+BL51 BANKED LINKER/LOCATER V6.22                                                      09/09/2015  10:50:48  PAGE 3
+
+
+  C:0207H         LINE#         62
+  C:0214H         LINE#         63
+  C:0228H         LINE#         64
+  C:023CH         LINE#         65
+  C:0250H         LINE#         69
+  C:0256H         LINE#         70
+  C:0263H         LINE#         71
+  C:0263H         LINE#         72
+  C:0269H         LINE#         73
+  C:0271H         LINE#         74
+  C:0278H         LINE#         75
+  C:027BH         LINE#         77
+  C:0281H         LINE#         78
+  C:0283H         LINE#         79
+  C:0286H         LINE#         80
+  C:0289H         LINE#         82
+  C:028FH         LINE#         83
+  C:0291H         LINE#         84
+  C:0294H         LINE#         85
+  C:0297H         LINE#         87
+  C:029DH         LINE#         88
+  C:029FH         LINE#         89
+  C:02A2H         LINE#         91
+  C:02A8H         LINE#         92
+  C:02AAH         LINE#         93
+  C:02ADH         LINE#         94
+  C:02B0H         LINE#         96
+  C:02B6H         LINE#         97
+  C:02B8H         LINE#         98
+  C:02BBH         LINE#         99
+  C:02BEH         LINE#         101
+  C:02C4H         LINE#         102
+  C:02C6H         LINE#         103
+  C:02C9H         LINE#         105
+  C:02CFH         LINE#         106
+  C:02D1H         LINE#         107
+  C:02D4H         LINE#         108
+  C:02D7H         LINE#         109
+  C:02DAH         LINE#         111
+  C:02E2H         LINE#         113
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DIGITAL_TUBE
+
+  -------         MODULE        ?C?COPY
+  C:00D3H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+  -------         MODULE        ?C?SIDIV
+  C:00F9H         PUBLIC        ?C?SIDIV
+  -------         ENDMOD        ?C?SIDIV
+
+  -------         MODULE        ?C?UIDIV
+  C:012FH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=23.0 xdata=0 code=820
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
