@@ -1,0 +1,209 @@
+C51 COMPILER V9.00   MYIIC                                                                 09/12/2015 10:41:33 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MYIIC
+OBJECT MODULE PLACED IN ..\Obj\Myiic.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE ..\src\Myiic.c LARGE BROWSE INCDIR(..\src;..\User) DEBUG OBJECTEXTEND PRINT
+                    -(..\Obj\Myiic.lst) OBJECT(..\Obj\Myiic.obj)
+
+line level    source
+
+   1          #include "myiic.h"        
+   2          
+   3          //初始化IIC
+   4          void IIC_Init(void)
+   5          {                                            
+   6   1              IIC_SCL=1;
+   7   1              IIC_SDA=1;
+   8   1      }
+   9          
+  10          
+  11          //产生IIC起始信号
+  12          void IIC_Start(void)
+  13          {
+  14   1      
+  15   1              IIC_SDA=1;                
+  16   1              IIC_SCL=1;
+  17   1              delay_us();
+  18   1              IIC_SDA=0;//START:when CLK is high,DATA change form high to low 
+  19   1              delay_us();
+  20   1              IIC_SCL=0;//钳住I2C总线，准备发送或接收数据 
+  21   1      }         
+  22          //产生IIC停止信号
+  23          void IIC_Stop(void)
+  24          {
+  25   1      
+  26   1              IIC_SCL=0;
+  27   1              IIC_SDA=0;//STOP:when CLK is high DATA change form low to high
+  28   1              delay_us();
+  29   1              IIC_SCL=1; 
+  30   1              delay_us();
+  31   1              IIC_SDA=1;//发送I2C总线结束信号
+  32   1              //delay_us();
+  33   1                              
+  34   1      }
+  35          //等待应答信号到来
+  36          //返回值：1，接收应答失败
+  37          //        0，接收应答成功
+  38          uchar IIC_Wait_Ack(void)
+  39          {
+  40   1              uchar ucErrTime=0;  
+  41   1              //IIC_SDA=1;delay_us();    
+  42   1              IIC_SCL=1;delay_us();
+  43   1       
+  44   1              while(IIC_SDA)
+  45   1              {
+  46   2                      ucErrTime++;
+  47   2                      if(ucErrTime>250)
+  48   2                      {
+  49   3                              IIC_Stop();
+  50   3                              return 1;
+  51   3                      }
+  52   2              }
+  53   1              IIC_SCL=0;//时钟输出0   
+  54   1              delay_us();   
+C51 COMPILER V9.00   MYIIC                                                                 09/12/2015 10:41:33 PAGE 2   
+
+  55   1              return 0;  
+  56   1      } 
+  57          //产生ACK应答
+  58          void IIC_Ack(void)      //送一个低到数据口
+  59          {
+  60   1              IIC_SCL=0;
+  61   1              
+  62   1              IIC_SDA=0;
+  63   1              delay_us();
+  64   1              IIC_SCL=1;
+  65   1              delay_us();
+  66   1              IIC_SCL=0;
+  67   1      }
+  68          //不产生ACK应答             
+  69          void IIC_NAck(void)        //送一个高到数据口
+  70          {
+  71   1              IIC_SCL=0;
+  72   1              
+  73   1              IIC_SDA=1;
+  74   1              delay_us();
+  75   1              IIC_SCL=1;
+  76   1              delay_us();
+  77   1              IIC_SCL=0;
+  78   1      }                                                                            
+  79          //IIC发送一个字节
+  80          //返回从机有无应答
+  81          //1，有应答
+  82          //0，无应答                       
+  83          void IIC_Send_Byte(uchar txd)
+  84          {                        
+  85   1          uchar t;   
+  86   1                  
+  87   1          IIC_SCL=0;//拉低时钟开始数据传输
+  88   1          for(t=0;t<8;t++)
+  89   1          {              
+  90   2              IIC_SDA=(txd&0x80)>>7;
+  91   2              txd<<=1;          
+  92   2                      delay_us();   
+  93   2                      IIC_SCL=1;
+  94   2                      delay_us(); 
+  95   2                      IIC_SCL=0;      
+  96   2                      delay_us();
+  97   2          }    
+  98   1      }           
+  99          //读1个字节，ack=1时，发送ACK，ack=0，发送nACK   
+ 100          uchar IIC_Read_Byte(unsigned char ack)
+ 101          {
+ 102   1              unsigned char i,receive=0;
+ 103   1      
+ 104   1          for(i=0;i<8;i++ )
+ 105   1              {
+ 106   2              IIC_SCL=0; 
+ 107   2              delay_us();
+ 108   2                      IIC_SCL=1;
+ 109   2              receive<<=1;
+ 110   2              if(IIC_SDA)receive++;   
+ 111   2                      delay_us(); 
+ 112   2          }                                    
+ 113   1          if (!ack)
+ 114   1              IIC_NAck();//发送nACK
+ 115   1          else
+ 116   1              IIC_Ack(); //发送ACK   
+C51 COMPILER V9.00   MYIIC                                                                 09/12/2015 10:41:33 PAGE 3   
+
+ 117   1          return receive;
+ 118   1      }
+ 119          
+ 120          void Device_Write_Byte(uchar DevAdd,uchar add,uchar dat)                //写一个字节
+ 121          {
+ 122   1              IIC_Start();
+ 123   1              IIC_Send_Byte(DevAdd);//写入设备ID及写信号
+ 124   1              IIC_Wait_Ack();
+ 125   1      
+ 126   1              IIC_Send_Byte(add);//写地址
+ 127   1              IIC_Wait_Ack();
+ 128   1      
+ 129   1              IIC_Send_Byte(dat);
+ 130   1              IIC_Wait_Ack();
+ 131   1      
+ 132   1              IIC_Stop();
+ 133   1              //delay_ms(10);         
+ 134   1      }
+ 135          
+ 136          uchar Device_Read_Byte(uchar DevAdd,uchar add)                  //读一个字节
+ 137          {
+ 138   1              uchar IIC_DATA=0;
+ 139   1              IIC_Start();
+ 140   1              IIC_Send_Byte(DevAdd);//写入设备ID及写信号
+ 141   1              IIC_Wait_Ack();
+ 142   1              IIC_Send_Byte(add);//写地址
+ 143   1              IIC_Wait_Ack();
+ 144   1      
+ 145   1              IIC_Start();
+ 146   1              IIC_Send_Byte(DevAdd+1);//写入设备ID及读信号
+ 147   1              IIC_Wait_Ack();
+ 148   1      
+ 149   1              IIC_DATA=IIC_Read_Byte(0);//获得数据，不发送ACK
+ 150   1              IIC_Stop();//
+ 151   1              return IIC_DATA;                
+ 152   1      } 
+ 153          
+ 154          
+ 155          
+ 156          
+ 157          
+ 158          
+ 159          
+ 160          
+ 161          
+ 162          
+ 163          
+ 164          
+ 165          
+ 166          
+ 167          
+ 168          
+ 169          
+ 170          
+ 171          
+ 172          
+ 173          
+ 174          
+ 175          
+ 176          
+ 177          
+ 178          
+C51 COMPILER V9.00   MYIIC                                                                 09/12/2015 10:41:33 PAGE 4   
+
+ 179          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    352    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      12
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

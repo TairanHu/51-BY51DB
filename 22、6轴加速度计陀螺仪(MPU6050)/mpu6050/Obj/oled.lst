@@ -1,0 +1,407 @@
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE OLED
+OBJECT MODULE PLACED IN ..\Obj\oled.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE ..\src\oled.c LARGE BROWSE INCDIR(..\src;..\User) DEBUG OBJECTEXTEND PRINT(
+                    -..\Obj\oled.lst) OBJECT(..\Obj\oled.obj)
+
+line level    source
+
+   1          #include "oled.h"
+   2          
+   3          void OLED_Test(void)
+   4          {
+   5   1              uchar i;
+   6   1              for(i=0;i<4;i++)
+   7   1              Show_Chinese(i*32,0,i);
+   8   1              
+   9   1              for(i=4;i<7;i++)
+  10   1              Show_Chinese(i*32+16,4,i);
+  11   1      }
+  12          
+  13          void Write_Com(uchar com)//写命令
+  14          {
+  15   1              uchar i;
+  16   1              LCD_DC=0;//写命令
+  17   1              //LED_SCL=0;
+  18   1              for(i=0;i<8;i++)
+  19   1              {
+  20   2                      LCD_SCL=0;
+  21   2                      if((com<<i)&0x80)
+  22   2                              LCD_SDE=1;
+  23   2                      else
+  24   2                              LCD_SDE=0;
+  25   2                      LCD_SCL=1;
+  26   2              }
+  27   1      }
+  28          void Write_Data(uchar date)//写数据
+  29          {
+  30   1              uchar i;
+  31   1              LCD_DC=1;//写数据
+  32   1              //LED_SCL=0;
+  33   1              for(i=0;i<8;i++)
+  34   1              {
+  35   2                      LCD_SCL=0;
+  36   2                      if((date<<i)&0x80)
+  37   2                              LCD_SDE=1;
+  38   2                      else
+  39   2                              LCD_SDE=0;
+  40   2                      LCD_SCL=1;
+  41   2              }
+  42   1      }
+  43          void Set_Pos(uchar x,uchar y)//设定光标起始位置
+  44          {
+  45   1              Write_Com(0xb0+y);//设置起始page
+  46   1              Write_Com(((x&0xf0)>>4)|0x10);//送高位起始地址
+  47   1              Write_Com((x&0x0f)|0x01);//送低位起始地址                       
+  48   1      }
+  49          void LCD_Fill(void)//写满屏
+  50          {
+  51   1              uchar y,x;      
+  52   1              for(y=0;y<8;y++)
+  53   1              {
+  54   2                      Write_Com(0xb0+y);
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 2   
+
+  55   2                      Write_Com(0x01);
+  56   2                      Write_Com(0x10);
+  57   2                      for(x=0;x<X_width;x++)
+  58   2                              Write_Data(0xff);
+  59   2              }
+  60   1      }
+  61          void LCD_Cls(void)//清屏
+  62          {
+  63   1              uchar y,x;      
+  64   1              for(y=0;y<8;y++)
+  65   1              {
+  66   2                      Write_Com(0xb0+y);
+  67   2                      Write_Com(0x01);
+  68   2                      Write_Com(0x10); 
+  69   2                      for(x=0;x<X_width;x++)
+  70   2                              Write_Data(0);
+  71   2              }
+  72   1      } 
+  73          void OLED_Init(void)
+  74          {
+  75   1              LCD_CS=0;
+  76   1              LCD_SCL=1;
+  77   1              //LCD_CS=1;     //预制SLK和SS为高电平   
+  78   1              LCD_RST=0;
+  79   1              Delay_ms(30);
+  80   1              LCD_RST=1;
+  81   1              
+  82   1              //从上电到下面开始初始化要有足够的时间，即等待RC复位完毕   
+  83   1        
+  84   1        Write_Com(0xae);//关闭显示
+  85   1        Write_Com(0x00);//---set low column address
+  86   1        Write_Com(0x10);//---set high column address
+  87   1        Write_Com(0x40);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
+  88   1      
+  89   1        Write_Com(0x81);//--set contrast control register
+  90   1        Write_Com(0xcf); // Set SEG Output Current Brightness
+  91   1      
+  92   1        Write_Com(0xa1);//--Set SEG/Column Mapping     0xa0左右反置 0xa1正常
+  93   1        Write_Com(0xc8);//Set COM/Row Scan Direction   0xc0上下反置 0xc8正常
+  94   1        Write_Com(0xa6);//--set normal display                 (0xa7)
+  95   1      
+  96   1        Write_Com(0xa8);//--set multiplex ratio(1 to 64)
+  97   1        Write_Com(0x3f);//--1/64 duty
+  98   1        Write_Com(0xd3);//-set display offset Shift Mapping RAM Counter (0x00~0x3F)
+  99   1        Write_Com(0x00);//-not offset
+ 100   1      
+ 101   1        Write_Com(0xd5);//--set display clock divide ratio/oscillator frequency
+ 102   1        Write_Com(0x80);//--set divide ratio, Set Clock as 100 Frames/Sec
+ 103   1      
+ 104   1        Write_Com(0xd9);//--set pre-charge period
+ 105   1        Write_Com(0xf1);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
+ 106   1      
+ 107   1        Write_Com(0xda);//--set com pins hardware configuration
+ 108   1        Write_Com(0x12);
+ 109   1        Write_Com(0xdb);//--set vcomh
+ 110   1        Write_Com(0x40);//Set VCOM Deselect Level
+ 111   1        Write_Com(0x20);//-Set Page Addressing Mode (0x00/0x01/0x02)
+ 112   1        Write_Com(0x02);//
+ 113   1        Write_Com(0x8d);//--set Charge Pump enable/disable
+ 114   1        Write_Com(0x14);//--set(0x10) disable
+ 115   1        Write_Com(0xa4);// Disable Entire Display On (0xa4/0xa5)
+ 116   1        Write_Com(0xa6);// Disable Inverse Display On (0xa6/a7) 
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 3   
+
+ 117   1        Write_Com(0xaf);//--turn on oled panel
+ 118   1        LCD_Cls();  //初始清屏
+ 119   1        Set_Pos(0,0);
+ 120   1      }
+ 121          
+ 122          
+ 123          void Show_f6x8str(uchar x,uchar y,uchar *ch)
+ 124          {
+ 125   1        uchar c=0,i=0,j=0;      
+ 126   1        while(ch[j]!='\0')
+ 127   1        {    
+ 128   2          c =ch[j]-32;
+ 129   2          if(x>126){x=0;y++;} //换行
+ 130   2          Set_Pos(x,y);    
+ 131   2              for(i=0;i<6;i++)     
+ 132   2                Write_Data(f6x8[c][i]);  
+ 133   2              x+=6;
+ 134   2              j++;
+ 135   2        }
+ 136   1      }       
+ 137          
+ 138          int My_pow(uchar m,uchar n)             //幂函数
+ 139          {
+ 140   1              int result=1;    
+ 141   1              while(n--)result*=m;    
+ 142   1              return result;  
+ 143   1      }
+ 144          
+ 145          void Show_Num_f8x16(uchar x,uchar y,uint num,uchar len)
+ 146          {
+*** WARNING C235 IN LINE 146 OF ..\SRC\OLED.C: parameter 3: different types
+ 147   1              uchar temp,t,i;
+ 148   1              for(t=0;t<len;t++)
+ 149   1              {
+ 150   2                      temp=(num/My_pow(10,len-t-1))%10;
+ 151   2                      //if(x>120){x=0;y++;}//换行
+ 152   2                      Set_Pos(x,y);//设定高8位起始位置
+ 153   2                      for(i=0;i<8;i++)     
+ 154   2                              Write_Data(f8x16[(temp+16)*16+i]);
+ 155   2                      Set_Pos(x,y+1);//设定低八位起始位置
+ 156   2                      for(i=0;i<8;i++)     
+ 157   2                              Write_Data(f8x16[(temp+16)*16+8+i]);
+ 158   2                      x+=8;
+ 159   2              }       
+ 160   1      }
+ 161          
+ 162           
+ 163          void Show_Num_f6x8(uchar x,uchar y,int num,uchar len)
+ 164          {
+ 165   1              uchar temp,t,i;
+ 166   1              for(t=0;t<len;t++)
+ 167   1              {
+ 168   2                      temp=(num/My_pow(10,len-t-1))%10;
+ 169   2                      //if(x>126){x=0;y++;}//换行
+ 170   2                      Set_Pos(x,y);//设定高8位起始位置
+ 171   2                      for(i=0;i<6;i++)     
+ 172   2                              Write_Data(f6x8[temp+16][i]);   
+ 173   2                      x+=6;
+ 174   2              }       
+ 175   1      }
+ 176          
+ 177          void Show_f8x16str(uchar x,uchar y,uchar *ch)//显示8x16字符串
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 4   
+
+ 178          {
+ 179   1        uchar c=0,i=0,j=0;
+ 180   1              
+ 181   1        while(ch[j]!='\0')
+ 182   1        {    
+ 183   2          c=ch[j]-32;
+ 184   2          //if(x>120){x=0;y++;}//换行
+ 185   2      
+ 186   2          Set_Pos(x,y);//设定高8位起始位置    
+ 187   2              for(i=0;i<8;i++)     
+ 188   2                      Write_Data(f8x16[c*16+i]);
+ 189   2              Set_Pos(x,y+1);//设定低八位起始位置    
+ 190   2              for(i=0;i<8;i++)     
+ 191   2                      Write_Data(f8x16[c*16+i+8]);  
+ 192   2              x+=8;
+ 193   2              j++;
+ 194   2        }
+ 195   1      }
+ 196          
+ 197          
+ 198          //      
+ 199          void Show_Chinese(uchar x,uchar y,uchar N)
+ 200          {
+ 201   1              uchar i;
+ 202   1              int adder=128*N;                
+ 203   1              Set_Pos(x,y);
+ 204   1              for(i=0;i<32;i++)
+ 205   1              {               
+ 206   2                      Write_Data(logo[adder]);
+ 207   2                      adder++;
+ 208   2              }                  
+ 209   1              Set_Pos(x,y + 1); 
+ 210   1              for(i=0;i<32;i++) 
+ 211   1              {              
+ 212   2                      Write_Data(logo[adder]);
+ 213   2                      adder++;
+ 214   2              }               
+ 215   1              Set_Pos(x,y + 2); 
+ 216   1              for(i=0;i<32;i++) 
+ 217   1              {              
+ 218   2                      Write_Data(logo[adder]);
+ 219   2                      adder++;
+ 220   2              }
+ 221   1              Set_Pos(x,y + 3); 
+ 222   1              for(i=0;i<32;i++) 
+ 223   1              {              
+ 224   2                      Write_Data(logo[adder]);
+ 225   2                      adder++;
+ 226   2              }
+ 227   1      } 
+ 228          
+ 229          
+ 230          void Show_Picture(uchar Long,uchar *pp,uchar EN)
+ 231          {
+ 232   1              uchar y,x,null; 
+ 233   1      
+ 234   1              null=(128-Long)/2;
+ 235   1              for(y=0;y<8;y++)
+ 236   1              {
+ 237   2                      Write_Com(0xb0+y);
+ 238   2                      Write_Com(0x01);
+ 239   2                      Write_Com(0x10);
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 5   
+
+ 240   2      
+ 241   2                      for(x=0;x<null;x++)
+ 242   2                      {
+ 243   3                              if(EN)
+ 244   3                              Write_Data(0xff);
+ 245   3                              else  Write_Data(0);
+ 246   3                      }
+ 247   2      
+ 248   2                      for(x=null;x<Long+null;x++)
+ 249   2                      {
+ 250   3                              if(EN)
+ 251   3                              Write_Data(*(pp++));
+ 252   3      
+ 253   3                              else Write_Data(~*(pp++));
+ 254   3                      }
+ 255   2                      for(x=Long+null;x<128;x++)
+ 256   2                      {
+ 257   3                              if(EN)
+ 258   3                              Write_Data(0xff);
+ 259   3                              else  Write_Data(0);
+ 260   3                      }
+ 261   2              }               
+ 262   1      }
+ 263          
+ 264          
+ 265          //void Show_8x16Str1(u8 x,u8 y,u8 N)
+ 266          //{
+ 267          //      u8 i;
+ 268          //      int adder=16*N;         
+ 269          //      Set_Pos(x,y);
+ 270          //      for(i=0;i<8;i++)
+ 271          //      {               
+ 272          //              //Write_Data(Title3[adder]);
+ 273          //              adder++;
+ 274          //      }                  
+ 275          //      Set_Pos(x,y + 1); 
+ 276          //      for(i=0;i<8;i++) 
+ 277          //      {              
+ 278          //              //Write_Data(Title3[adder]);
+ 279          //              adder++;
+ 280          //      }       
+ 281          //}
+ 282          
+ 283          //void Show_16x16Str(u8 x,u8 y,u8 N)
+ 284          //{
+ 285          //      u8 i;
+ 286          //      int adder=32*N;         
+ 287          //      Set_Pos(x,y);
+ 288          //      for(i=0;i<16;i++)
+ 289          //      {               
+ 290          //              //Write_Data(Title1[adder]);
+ 291          //              adder++;
+ 292          //      }                  
+ 293          //      Set_Pos(x,y + 1); 
+ 294          //      for(i=0;i<16;i++) 
+ 295          //      {              
+ 296          //              //Write_Data(Title1[adder]);
+ 297          //              adder++;
+ 298          //      }       
+ 299          //}
+ 300          
+ 301          //void Show_16x32Str(u8 x,u8 y,u8 N)
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 6   
+
+ 302          //{
+ 303          //      u8 i;
+ 304          //      int adder=64*N;         
+ 305          //      Set_Pos(x,y);
+ 306          //      for(i=0;i<16;i++)
+ 307          //      {               
+ 308          //              //Write_Data(Title2[adder]);
+ 309          //              adder++;
+ 310          //      }                  
+ 311          //      Set_Pos(x,y + 1); 
+ 312          //      for(i=0;i<16;i++) 
+ 313          //      {              
+ 314          //              //Write_Data(Title2[adder]);
+ 315          //              adder++;
+ 316          //      }
+ 317          //      Set_Pos(x,y + 2); 
+ 318          //      for(i=0;i<16;i++) 
+ 319          //      {              
+ 320          //              //Write_Data(Title2[adder]);
+ 321          //              adder++;
+ 322          //      }
+ 323          //      Set_Pos(x,y + 3); 
+ 324          //      for(i=0;i<16;i++) 
+ 325          //      {              
+ 326          //              //Write_Data(Title2[adder]);
+ 327          //              adder++;
+ 328          //      }       
+ 329          //}
+ 330          
+ 331          //void Show_Chinese(u8 x,u8 y,u8 N)
+ 332          //{
+ 333          //      u8 i;
+ 334          //      int adder=28*N;         
+ 335          //      Set_Pos(x,y);
+ 336          //      for(i=0;i<14;i++)
+ 337          //      {               
+ 338          //              //Write_Data(Title[adder]);
+ 339          //              adder++;
+ 340          //      }                  
+ 341          //      Set_Pos(x,y + 1); 
+ 342          //      for(i=0;i<14;i++) 
+ 343          //      {              
+ 344          //              //Write_Data(Title[adder]);
+ 345          //              adder++;
+ 346          //      }               
+ 347          //} 
+ 348          
+ 349          //void Show_Title(void)
+ 350          //{
+ 351          //      u8 i;
+ 352          //      for(i=0;i<8;i++)
+ 353          //      Show_16x16Str(i*16-1,0,i);
+ 354          
+ 355          //      for(i=0;i<8;i++)
+ 356          //      Show_16x32Str(i*15+1,2,i);
+ 357          
+ 358          //      for(i=0;i<16;i++)
+ 359          //      Show_8x16Str1(i*8,6,i);
+ 360          //      
+ 361          //      delay_ms(500);
+ 362          //      delay_ms(500);
+ 363          //      delay_ms(500);
+C51 COMPILER V9.00   OLED                                                                  09/12/2015 10:41:33 PAGE 7   
+
+ 364          //      delay_ms(500);
+ 365          
+ 366          //      LCD_Cls();
+ 367          //}
+ 368          
+ 369          
+ 370          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1333    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      35
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

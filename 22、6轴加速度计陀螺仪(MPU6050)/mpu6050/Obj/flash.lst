@@ -1,0 +1,59 @@
+C51 COMPILER V9.52.0.0   FLASH                                                             06/19/2015 20:36:23 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE FLASH
+OBJECT MODULE PLACED IN ..\Obj\flash.obj
+COMPILER INVOKED BY: D:\Programs File\Keli\C51\BIN\C51.EXE ..\src\flash.c BROWSE INCDIR(..\src;..\User) DEBUG OBJECTEXTE
+                    -ND PRINT(..\Obj\flash.lst) OBJECT(..\Obj\flash.obj)
+
+line level    source
+
+   1          #include "flash.h"
+   2          
+   3          void FLASH_Test(void)
+   4          {
+   5   1              int temp;
+   6   1              temp=SPI_Flash_ReadID();
+   7   1              if(temp==W25Q64)
+   8   1              {
+   9   2                      Show_f8x16str(0,0,"Flash Test Pass");
+  10   2                      
+  11   2              }
+  12   1              else   Show_f8x16str(0,0,"Flash Test Fail");
+  13   1              Show_f8x16str(0,2,"MID:");
+  14   1              Show_Num_f8x16(32,2,temp,5);
+  15   1      
+  16   1              
+  17   1      }
+  18          
+  19          uint SPI_Flash_ReadID(void)
+  20          {
+  21   1              uint Temp;        
+  22   1              SPI_FLASH_CS=0;                             
+  23   1              SPI_ReadWriteByte(0x90);//∑¢ÀÕ∂¡»°ID√¸¡Ó            
+  24   1              SPI_ReadWriteByte(0x00);            
+  25   1              SPI_ReadWriteByte(0x00);            
+  26   1              SPI_ReadWriteByte(0x00); 
+  27   1              
+  28   1              //SPI_ReadWriteByte(0xff);                         
+  29   1              Temp=SPI_ReadWriteByte(0xFF)<<8;  
+  30   1              Temp|=SPI_ReadWriteByte(0xFF);   
+  31   1      
+  32   1      
+  33   1              SPI_FLASH_CS=1;                             
+  34   1              return Temp;
+  35   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    112    ----
+   CONSTANT SIZE    =     37    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
