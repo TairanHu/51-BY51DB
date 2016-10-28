@@ -1,0 +1,96 @@
+C51 COMPILER V9.00   2402                                                                  08/30/2015 16:59:39 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE 2402
+OBJECT MODULE PLACED IN 2402.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE 2402.c COMPACT BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1           
+   2           /*************************此部分为AT2402的驱动程序使用I2C总线连接*************************************/
+   3          
+   4          #include "2402.h"
+   5          #include "I2C.h"
+   6          
+   7          //AT2402的功能函数
+   8          /*******************************************************************
+   9                              向有子地址器件发送多字节数据函数               
+  10          函数原型: bit  ISendStr(UCHAR sla,UCHAR suba,ucahr *s,UCHAR no);  
+  11          功能:     从启动总线到发送地址，子地址,数据，结束总线的全过程,从器件
+  12                    地址sla，子地址suba，发送内容是s指向的内容，发送no个字节。
+  13                    如果返回1表示操作成功，否则操作有误。
+  14          注意：    使用前必须已结束总线。
+  15          ********************************************************************/
+  16          bit ISendStr(unsigned char  sla,unsigned char  suba,unsigned char  *s,unsigned char  no)
+  17          {
+  18   1         unsigned char i;
+  19   1      
+  20   1         Start_I2c();               /*启动总线*/
+  21   1         SendByte(sla);             /*发送器件地址*/
+  22   1         if(ack==0)return(0);
+  23   1         SendByte(suba);            /*发送器件子地址*/
+  24   1         if(ack==0)return(0);
+  25   1      
+  26   1         for(i=0;i<no;i++)
+  27   1         {   
+  28   2           SendByte(*s);            /*发送数据*/
+  29   2           if(ack==0)return(0);
+  30   2           s++;
+  31   2         } 
+  32   1         Stop_I2c();                /*结束总线*/ 
+  33   1      
+  34   1         return(1);
+  35   1      }
+  36          
+  37          /*******************************************************************
+  38                              向有子地址器件读取多字节数据函数               
+  39          函数原型: bit  RecndStr(UCHAR sla,UCHAR suba,ucahr *s,UCHAR no);  
+  40          功能:     从启动总线到发送地址，子地址,读数据，结束总线的全过程,从器件
+  41                    地址sla，子地址suba，读出的内容放入s指向的存储区，读no个字节。
+  42                     如果返回1表示操作成功，否则操作有误。
+  43          注意：    使用前必须已结束总线。
+  44          ********************************************************************/
+  45          bit IRcvStr(unsigned char  sla,unsigned char  suba,unsigned char  *s,unsigned char  no)
+  46          {
+  47   1         unsigned char i;
+  48   1      
+  49   1         Start_I2c();                  /*启动总线*/
+  50   1         SendByte(sla);                /*发送器件地址*/
+  51   1         if(ack==0)return(0);
+  52   1         SendByte(suba);               /*发送器件子地址*/
+  53   1         if(ack==0)return(0);
+  54   1      
+  55   1         Start_I2c();                 /*重新启动总线*/
+C51 COMPILER V9.00   2402                                                                  08/30/2015 16:59:39 PAGE 2   
+
+  56   1         SendByte(sla+1);
+  57   1         if(ack==0)return(0);
+  58   1         for(i=0;i<no-1;i++)
+  59   1         {   
+  60   2           *s=RcvByte();               /*发送数据*/
+  61   2            Ack_I2c(0);                /*发送就答位*/  
+  62   2           s++;
+  63   2         } 
+  64   1         *s=RcvByte();
+  65   1         Ack_I2c(1);                   /*发送非应位*/
+  66   1         Stop_I2c();                   /*结束总线*/ 
+  67   1         return(1);
+  68   1      }
+  69          
+  70          
+  71          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    243    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----      14
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
