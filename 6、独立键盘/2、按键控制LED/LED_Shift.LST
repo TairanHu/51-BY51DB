@@ -1,0 +1,103 @@
+C51 COMPILER V9.00   LED_SHIFT                                                             08/08/2015 23:50:00 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE LED_SHIFT
+OBJECT MODULE PLACED IN LED_Shift.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE LED_Shift.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          
+   3          
+   4          #include <reg52.h>
+   5          #include <intrins.h>
+   6          
+   7          sbit BUTTON1 = P0^0;       //定义P0.0为1号按键接口
+   8          sbit BUTTON2 = P0^1;       //定义P0.1为2号按键接口
+   9          
+  10          void delay()
+  11          {
+  12   1              int i,j;
+  13   1              for(i = 0; i < 100; i++)
+  14   1              {
+  15   2                      for(j = 0; j < 110; j++) ;
+  16   2              }
+  17   1      }
+  18          
+  19          //void main()
+  20          //{
+  21          //      unsigned char led = 0xfe;
+  22          //      P1 = led;
+  23          //      while(1)
+  24          //      {
+  25          //              if(BUTTON1 == 0)
+  26          //              {
+  27          //                      delay();
+  28          //                      if(BUTTON1 == 0)
+  29          //                      {
+  30          //                              led = _crol_(led, 1);           
+  31          //                      }
+  32          //              }
+  33          //              else if(BUTTON2 == 0)
+  34          //              {
+  35          //                      delay();
+  36          //                      if(BUTTON2 == 0)
+  37          //                      {
+  38          //                              led = _cror_(led, 1);
+  39          //                      }
+  40          //              }
+  41          //              
+  42          //              P1 = led;       
+  43          //      }
+  44          //}
+  45          
+  46          
+  47          
+  48          void main()
+  49          {
+  50   1              unsigned char led = 0xfe;
+  51   1              P1 = led;                                                        //初始化P1为0xfe，最后一个端口输出低电平，其他输出高电平，即第一个LED点亮
+  52   1              while(1)
+  53   1              {
+  54   2                      if(BUTTON1 == 0)                     //如果第一个按键按下，LED就左移一位
+  55   2                      {
+C51 COMPILER V9.00   LED_SHIFT                                                             08/08/2015 23:50:00 PAGE 2   
+
+  56   3                              delay();
+  57   3                              while(BUTTON1 == 0);
+  58   3      
+  59   3                              delay();
+  60   3      //                      if(BUTTON1 == 0)
+  61   3                              {
+  62   4                                      led = _crol_(led, 1);           
+  63   4                              }
+  64   3                      }
+  65   2                      else if(BUTTON2 == 0)                     //如果第二个按键按下，LED 右移一位
+  66   2                      {
+  67   3                              delay();
+  68   3                              while(BUTTON2 == 0)     ;
+  69   3                              delay();
+  70   3      //                      if(BUTTON2 == 0)
+  71   3                              {
+  72   4                                      led = _cror_(led, 1);
+  73   4                              }
+  74   3                      }
+  75   2                      
+  76   2                      P1 = led;       
+  77   2              }
+  78   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     87    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
