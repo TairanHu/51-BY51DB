@@ -1,0 +1,96 @@
+C51 COMPILER V9.00   74595                                                                 08/24/2015 20:11:33 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE 74595
+OBJECT MODULE PLACED IN 74595.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE 74595.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include <reg51.h> 
+   3          #include <intrins.h>
+   4          #define  NOP() _nop_()  /* 定义空指令 */
+   5          
+   6          //SPI IO
+   7          sbit MOSIO =P3^5;
+   8          sbit R_CLK =P3^6;
+   9          sbit S_CLK =P3^4;
+  10          
+  11          
+  12          void delay(unsigned int i);      //函数声名
+  13          void HC595SendData(unsigned char SendVal);
+  14           
+  15          
+  16          main()
+  17          {  unsigned char Led=0xfe;       //1111 1110
+  18   1         HC595SendData(0xff);     //初始化595使他为高电平 让LED处于熄灭状态
+  19   1         
+  20   1        while(1)
+  21   1        {      
+  22   2                      
+  23   2                  HC595SendData(Led); //调用595驱动程序 把LED的数据送到595
+  24   2                      Led<<=1;
+  25   2                      Led     = Led| 0x01;  //移位后，后面的位为高电平;
+  26   2                  if (Led == 0xff ) Led=0xfe;  //1111 1110
+  27   2                                      
+  28   2                               
+  29   2                      delay(200);
+  30   2               
+  31   2        }   
+  32   1      }       
+  33          /*****************************************************************************
+  34          *  延时子程序                                                                                                                        *
+  35          *                                                                                                                                                        *
+  36          ******************************************************************************/
+  37          void delay(unsigned int i)
+  38          {
+  39   1          unsigned int j;
+  40   1          for(i; i > 0; i--)
+  41   1              for(j = 300; j > 0; j--);
+  42   1      }
+  43          
+  44          
+  45          /*********************************************************************************************************
+  46          ** 函数名称: HC595SendData
+  47          ** 功能描述: 向SPI总线发送数据
+  48          *********************************************************************************************************/
+  49          void HC595SendData(unsigned char SendVal)
+  50          {  
+  51   1        unsigned char i;
+  52   1                      
+  53   1        for(i=0;i<8;i++) 
+  54   1         {
+  55   2              if((SendVal<<i)&0x80) MOSIO=1; //set dataline high  0X80  最高位与SendVal左移的最高位 进行逻辑运算
+C51 COMPILER V9.00   74595                                                                 08/24/2015 20:11:33 PAGE 2   
+
+  56   2              else MOSIO=0;                              // 如果为真 MOSIO = 1  
+  57   2       
+  58   2              S_CLK=0;
+  59   2              NOP();  //产生方形波
+  60   2              NOP();
+  61   2              S_CLK=1;        
+  62   2         }
+  63   1         
+  64   1              
+  65   1        R_CLK=0; //set dataline low
+  66   1        NOP();   //产生方形波
+  67   1        NOP();
+  68   1        R_CLK=1; //片选
+  69   1      
+  70   1      }
+  71          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    107    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

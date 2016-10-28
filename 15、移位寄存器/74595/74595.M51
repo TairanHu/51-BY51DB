@@ -1,0 +1,120 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/24/2015  20:11:33  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE 74595.obj TO 74595 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  74595.obj (74595)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  74595 (74595)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0027H     UNIT         ?PR?MAIN?74595
+            CODE    002AH     0026H     UNIT         ?PR?_HC595SENDDATA?74595
+            CODE    0050H     001EH     UNIT         ?PR?_DELAY?74595
+            CODE    006EH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   74595 (74595)
+
+
+SEGMENT                            DATA_GROUP 
+  +--> CALLED SEGMENT            START    LENGTH
+------------------------------------------------
+?C_C51STARTUP                    -----    -----
+  +--> ?PR?MAIN?74595
+
+?PR?MAIN?74595                   0008H    0001H
+  +--> ?PR?_HC595SENDDATA?74595
+  +--> ?PR?_DELAY?74595
+
+
+
+SYMBOL TABLE OF MODULE:  74595 (74595)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        74595
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00B0H         PUBLIC        P3
+  B:00B0H.5       PUBLIC        MOSIO
+  B:00B0H.6       PUBLIC        R_CLK
+  B:00B0H.4       PUBLIC        S_CLK
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/24/2015  20:11:33  PAGE 2
+
+
+  C:0050H         PUBLIC        _delay
+  C:0003H         PUBLIC        main
+  C:002AH         PUBLIC        _HC595SendData
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        Led
+  -------         ENDDO         
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0006H         LINE#         18
+  C:000BH         LINE#         20
+  C:000BH         LINE#         21
+  C:000BH         LINE#         23
+  C:0010H         LINE#         24
+  C:0016H         LINE#         25
+  C:0019H         LINE#         26
+  C:0021H         LINE#         29
+  C:0028H         LINE#         31
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0050H         LINE#         37
+  C:0050H         LINE#         38
+  C:0050H         LINE#         40
+  C:0059H         LINE#         41
+  C:006DH         LINE#         42
+  -------         ENDPROC       _DELAY
+  -------         PROC          _HC595SENDDATA
+  D:0007H         SYMBOL        SendVal
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:002AH         LINE#         49
+  C:002AH         LINE#         50
+  C:002AH         LINE#         53
+  C:002CH         LINE#         54
+  C:002CH         LINE#         55
+  C:003DH         LINE#         56
+  C:003FH         LINE#         58
+  C:0041H         LINE#         59
+  C:0042H         LINE#         60
+  C:0043H         LINE#         61
+  C:0045H         LINE#         62
+  C:0049H         LINE#         65
+  C:004BH         LINE#         66
+  C:004CH         LINE#         67
+  C:004DH         LINE#         68
+  C:004FH         LINE#         70
+  -------         ENDPROC       _HC595SENDDATA
+  -------         ENDMOD        74595
+
+Program Size: data=10.0 xdata=0 code=122
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

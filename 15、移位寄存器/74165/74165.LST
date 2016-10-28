@@ -1,0 +1,91 @@
+C51 COMPILER V9.00   74165                                                                 08/24/2015 21:09:19 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE 74165
+OBJECT MODULE PLACED IN 74165.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE 74165.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include <reg52.H>
+   3          #include <intrins.h> 
+   4          
+   5          #define  NOP()   _nop_()   /* 定义空指令 */
+   6          
+   7          //SPI 接口
+   8          sbit    CLK    = P1^7;     //串行时钟
+   9          sbit    IN_PL  = P1^6;    //把数据加载到锁存器中
+  10          sbit    IN_Dat = P3^5;    //数据通过P1.7脚移进单片机内处理
+  11          
+  12          unsigned long ReHC74165(void);   //函数声名 
+  13           
+  14          
+  15           /********************************************************
+  16           *      主函数                                                                                           *
+  17           *                                                                                                               *
+  18           ********************************************************/
+  19           void main()
+  20           {               
+  21   1               unsigned long  Input;  
+  22   1               P0 = 0x7e;
+  23   1      
+  24   1               while(1)
+  25   1               { 
+  26   2                       Input=ReHC74165();//调用165驱动程序
+  27   2      
+  28   2                       P2 = Input;      //清除
+  29   2               }    
+  30   1       }
+  31          
+  32          
+  33           
+  34           /*************************此部分为74HC165的驱动程序使用SPI总线连接*************************************/
+  35          
+  36          
+  37          /*********************************************************************************************************
+  38          ** 函数名称:  74HC165
+  39          ** 功能描述: 
+  40          ** 管脚描述：请参考相关的芯片资料(学习光盘中以配)
+  41          *********************************************************************************************************/
+  42          unsigned long ReHC74165(void)
+  43          {  
+  44   1              unsigned char i;
+  45   1              unsigned int indata;
+  46   1                              
+  47   1              IN_PL=0;
+  48   1              NOP();           //短暂延时 产生一定宽度的脉冲
+  49   1              IN_PL=1;         //将外部信号全部读入锁存器中
+  50   1              NOP(); 
+  51   1                            
+  52   1              indata=0;   //保存数据的变量清0  
+  53   1              for(i=0; i<8; i++)
+  54   1              { 
+  55   2                      indata=indata<<1;        //左移一位
+C51 COMPILER V9.00   74165                                                                 08/24/2015 21:09:19 PAGE 2   
+
+  56   2                      if(IN_Dat==1)indata=indata+1;   //如果IN_Dat检测到高电平 保存数据的变量加1 
+  57   2                      CLK=0;   //时钟置0
+  58   2                      NOP();
+  59   2                      CLK=1;   //时钟置1        
+  60   2              } 
+  61   1               
+  62   1              return(indata);  //将保存数据的变量返回
+  63   1      }
+  64          
+  65          
+  66          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     56    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
