@@ -1,0 +1,4 @@
+"LCD1602.obj",
+"main.obj" 
+TO "IR" 
+RAMSIZE(256) 

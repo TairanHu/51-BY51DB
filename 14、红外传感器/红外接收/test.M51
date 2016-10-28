@@ -1,0 +1,149 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/23/2015  00:19:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE test.obj TO test RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  test.obj (TEST)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  test (TEST)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?TEST
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     0038H     UNIT         ?PR?IR_IN?TEST
+            CODE    003EH     001AH     UNIT         ?PR?_DELAY1?TEST
+            CODE    0058H     0012H     UNIT         ?PR?_DELAY?TEST
+            CODE    006AH     0010H     UNIT         ?PR?MAIN?TEST
+            CODE    007AH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   test (TEST)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?IR_IN?TEST
+  +--> ?PR?_DELAY?TEST
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?TEST
+
+
+
+SYMBOL TABLE OF MODULE:  test (TEST)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TEST
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/23/2015  00:19:57  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0058H         PUBLIC        _delay
+  C:0006H         PUBLIC        IR_IN
+  D:00B8H         PUBLIC        IP
+  C:006AH         PUBLIC        main
+  B:00B0H.2       PUBLIC        IRIN
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:003EH         PUBLIC        _delay1
+  B:00A8H.0       PUBLIC        EX0
+  D:0008H         PUBLIC        LED
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:006AH         LINE#         18
+  C:006AH         LINE#         19
+  C:006AH         LINE#         20
+  C:006CH         LINE#         21
+  C:006FH         LINE#         22
+  C:0072H         LINE#         24
+  C:0075H         LINE#         25
+  C:0078H         LINE#         27
+  C:0078H         LINE#         28
+  C:0078H         LINE#         30
+  -------         ENDPROC       MAIN
+  -------         PROC          IR_IN
+  C:0006H         LINE#         35
+  C:0013H         LINE#         37
+  C:0015H         LINE#         38
+  C:001AH         LINE#         39
+  C:001DH         LINE#         40
+  C:001DH         LINE#         41
+  C:0021H         LINE#         43
+  C:0021H         LINE#         45
+  C:0024H         LINE#         46
+  C:0024H         LINE#         47
+  C:0029H         LINE#         48
+  C:002BH         LINE#         50
+  C:002EH         LINE#         51
+  C:0031H         LINE#         53
+  C:0033H         LINE#         54
+  -------         ENDPROC       IR_IN
+  -------         PROC          _DELAY
+  D:0007H         SYMBOL        x
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0058H         LINE#         58
+  C:0058H         LINE#         59
+  C:0058H         LINE#         61
+  C:005EH         LINE#         62
+  C:005EH         LINE#         63
+  C:0069H         LINE#         64
+  C:0069H         LINE#         65
+  -------         ENDPROC       _DELAY
+  -------         PROC          _DELAY1
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/23/2015  00:19:57  PAGE 3
+
+
+  D:0006H         SYMBOL        ms
+  -------         DO            
+  D:0005H         SYMBOL        y
+  -------         ENDDO         
+  C:003EH         LINE#         68
+  C:003EH         LINE#         69
+  C:003EH         LINE#         71
+  C:0048H         LINE#         72
+  C:0048H         LINE#         73
+  C:0050H         LINE#         74
+  C:0050H         LINE#         75
+  C:0051H         LINE#         76
+  C:0052H         LINE#         77
+  C:0053H         LINE#         78
+  C:0054H         LINE#         79
+  C:0057H         LINE#         80
+  C:0057H         LINE#         81
+  -------         ENDPROC       _DELAY1
+  -------         ENDMOD        TEST
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY1?TEST
+
+Program Size: data=10.0 xdata=0 code=134
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

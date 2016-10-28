@@ -1,0 +1,177 @@
+C51 COMPILER V9.00   MAIN                                                                  08/27/2015 10:26:14 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include "LCD1602.h"
+   3          
+   4          #define uchar unsigned char
+   5          #define uint  unsigned int
+   6          #define delayNOP(); {_nop_();_nop_();_nop_();_nop_();};
+   7          
+   8          void delay(uchar x);  //x*0.14MS
+   9          void delay1(int ms);
+  10          
+  11          sbit IRIN = P3^2;         //红外接收器数据线
+  12          
+  13          uchar IRCOM[7];
+  14          
+  15          void main()
+  16          {
+  17   1              uchar Disp1[] = "IR Display";
+  18   1              uchar Disp2[] = "IR-CODE: --H";
+  19   1          
+  20   1          IRIN=1;                    //I/O口初始化
+  21   1              
+  22   1          delay1(10);                 //延时
+  23   1          LcdInitiate();                //初始化LCD             
+  24   1          
+  25   1              WriteAddress(0x03);    
+  26   1          WriteAddress(0x03);                //设置显示位置为第一行的第1个字符
+  27   1              WriteString(Disp1);
+  28   1      
+  29   1          WriteAddress(0x42);                //设置显示位置为第一行的第1个字符
+  30   1              WriteString(Disp2);
+  31   1      
+  32   1      
+  33   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+  34   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+  35   1      
+  36   1         while(1)     ;
+  37   1      
+  38   1      } //end main
+  39          
+  40          
+  41          
+  42          void IR_IN() interrupt 0 using 0
+  43          {
+  44   1              unsigned char j,k,N=0;
+  45   1              EX0 = 0;   
+  46   1              delay(15);
+  47   1              if (IRIN==1) 
+  48   1              { 
+  49   2                      EX0 =1;
+  50   2                      return;
+  51   2              } 
+  52   1                                         //确认IR信号出现
+  53   1              while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+  54   1              {
+  55   2                      delay(1);
+C51 COMPILER V9.00   MAIN                                                                  08/27/2015 10:26:14 PAGE 2   
+
+  56   2              }
+  57   1              
+  58   1              for (j=0;j<4;j++)         //收集四组数据
+  59   1              { 
+  60   2                      for (k=0;k<8;k++)        //每组数据有8位
+  61   2                      {
+  62   3                              while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+  63   3                              {
+  64   4                                      delay(1);
+  65   4                              }
+  66   3                              while (!IRIN)          //等 IR 变为高电平
+  67   3                              {
+  68   4                                      delay(1);
+  69   4                              }
+  70   3                              while (IRIN)           //计算IR高电平时长
+  71   3                              {
+  72   4                                      delay(1);
+  73   4                                      N++;           
+  74   4                                      if (N>=30)
+  75   4                                      { 
+  76   5                                              EX0=1;
+  77   5                                              return;
+  78   5                                      }                  //0.14ms计数过长自动离开。
+  79   4                              }                        //高电平计数完毕                
+  80   3                              IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+  81   3                              if (N>=8) 
+  82   3                              {
+  83   4                                      IRCOM[j] = IRCOM[j] | 0x80;                     //数据最高位补“1”
+  84   4                              }  
+  85   3                              N=0;
+  86   3                      }//end for k
+  87   2              }//end for j
+  88   1                 
+  89   1              if (IRCOM[2]!=~IRCOM[3])
+  90   1              { 
+  91   2                      EX0=1;
+  92   2                      return; 
+  93   2              }
+  94   1              
+  95   1              IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+  96   1              IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+  97   1              
+  98   1              if(IRCOM[5]>9)
+  99   1              { 
+ 100   2                      IRCOM[5]=IRCOM[5]+0x37;
+ 101   2              }
+ 102   1              else
+ 103   1              {
+ 104   2                      IRCOM[5]=IRCOM[5]+0x30;
+ 105   2              }
+ 106   1              
+ 107   1              if(IRCOM[6]>9)
+ 108   1              { 
+ 109   2                      IRCOM[6]=IRCOM[6]+0x37;
+ 110   2              }
+ 111   1              else
+ 112   1              {
+ 113   2                      IRCOM[6]=IRCOM[6]+0x30;
+ 114   2              }
+ 115   1              
+ 116   1              WriteAddress(0x4b);             
+ 117   1              WriteData(IRCOM[6]);        //第一位数显示 
+C51 COMPILER V9.00   MAIN                                                                  08/27/2015 10:26:14 PAGE 3   
+
+ 118   1              WriteAddress(0x4c);             
+ 119   1              WriteData(IRCOM[5]);        //第二位数显示
+ 120   1              
+ 121   1              EX0 = 1; 
+ 122   1      } 
+ 123          
+ 124          /**********************************************************/
+ 125          /**********************************************************/
+ 126          void delay(unsigned char x)    //x*0.14MS
+ 127          {
+ 128   1              unsigned char i;
+ 129   1              while(x--)
+ 130   1              {
+ 131   2                      for (i = 0; i<13; i++) {}
+ 132   2              }
+ 133   1      }
+ 134          
+ 135          /**********************************************************/
+ 136          void delay1(int ms)
+ 137          {
+ 138   1              unsigned char y;
+ 139   1              while(ms--)
+ 140   1              {
+ 141   2                      for(y = 0; y<250; y++)
+ 142   2                      {
+ 143   3                              _nop_();
+ 144   3                              _nop_();
+ 145   3                              _nop_();
+ 146   3                              _nop_();
+ 147   3                      }
+ 148   2              }
+ 149   1      }
+ 150          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    366    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7      27
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
