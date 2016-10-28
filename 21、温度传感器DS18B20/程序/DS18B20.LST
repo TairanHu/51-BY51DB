@@ -1,0 +1,194 @@
+C51 COMPILER V9.00   DS18B20                                                               08/30/2015 19:33:40 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN DS18B20.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE DS18B20.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include "DS18B20.h"
+   3          
+   4          
+   5          sbit D18B20=P3^7; // 18b20的引脚定义
+   6          
+   7          
+   8          
+   9          bit  flag;
+  10          uint Temperature;       //用来存放读出温度后的值
+  11          uchar temp_buff[9]; //存储读取的字节，read scratchpad为9字节，read rom ID为8字节
+  12          uchar *p,TIM;
+  13          
+  14          
+  15          /************************************************************
+  16          *Function:延时处理
+  17          *parameter:
+  18          *Return:
+  19          *Modify:
+  20          *************************************************************/
+  21          void TempDelay (uchar us)
+  22          {
+  23   1              while(us--);
+  24   1      }
+  25          
+  26          /************************************************************
+  27          *Function:18B20初始化
+  28          *parameter:
+  29          *Return:
+  30          *Modify:
+  31          *************************************************************/
+  32          void Init18b20 (void)
+  33          {
+  34   1              D18B20=1;
+  35   1              _nop_();
+  36   1              D18B20=0;
+  37   1              TempDelay(80);   //delay 530 uS//80
+  38   1              _nop_();
+  39   1              D18B20=1;
+  40   1              TempDelay(14);   //delay 100 uS//14
+  41   1              _nop_();
+  42   1              _nop_();
+  43   1              _nop_();
+  44   1              
+  45   1              if(D18B20==0)
+  46   1                      flag = 1;   //detect 1820 success!
+  47   1              else
+  48   1                      flag = 0;    //detect 1820 fail!
+  49   1              TempDelay(20);       //20
+  50   1              _nop_();
+  51   1              _nop_();
+  52   1              D18B20 = 1;
+  53   1      }
+  54          
+  55          /************************************************************
+C51 COMPILER V9.00   DS18B20                                                               08/30/2015 19:33:40 PAGE 2   
+
+  56          *Function:向18B20写入一个字节
+  57          *parameter:
+  58          *Return:
+  59          *Modify:
+  60          *************************************************************/
+  61          void WriteByte (uchar wr)  //单字节写入
+  62          {
+  63   1              unsigned char idata i;
+  64   1              for (i=0;i<8;i++)
+  65   1              {
+  66   2                      D18B20 = 0;
+  67   2                      _nop_();
+  68   2                      D18B20=wr&0x01;
+  69   2                      TempDelay(3);   //delay 45 uS //5
+  70   2                      _nop_();
+  71   2                      _nop_();
+  72   2                      D18B20=1;
+  73   2                      wr >>= 1;
+  74   2              }
+  75   1      }
+  76          
+  77          /************************************************************
+  78          *Function:读18B20的一个字节
+  79          *parameter:
+  80          *Return:
+  81          *Modify:
+  82          *************************************************************/
+  83          unsigned char ReadByte (void)     //读取单字节
+  84          {
+  85   1              unsigned char idata i,u=0;
+  86   1              for(i=0;i<8;i++)
+  87   1              {
+  88   2                      D18B20 = 0;
+  89   2                      u >>= 1;
+  90   2                      D18B20 = 1;
+  91   2                      if(D18B20==1)
+  92   2                      u |= 0x80;
+  93   2                      TempDelay (2);
+  94   2                      _nop_();
+  95   2              }
+  96   1              return(u);
+  97   1      }
+  98          
+  99          /************************************************************
+ 100          *Function:读18B20
+ 101          *parameter:
+ 102          *Return:
+ 103          *Modify:
+ 104          *************************************************************/
+ 105          void read_bytes (uchar j)
+ 106          {
+ 107   1               unsigned char idata i;
+ 108   1               for(i=0;i<j;i++)
+ 109   1               {
+ 110   2                        *p = ReadByte();
+ 111   2                        p++;
+ 112   2               }
+ 113   1      }
+ 114          
+ 115          /************************************************************
+ 116          *Function:读取温度
+ 117          *parameter:
+C51 COMPILER V9.00   DS18B20                                                               08/30/2015 19:33:40 PAGE 3   
+
+ 118          *Return:
+ 119          *Modify:
+ 120          *************************************************************/
+ 121          void GemTemp (void)
+ 122          {        
+ 123   1                  Temperature = temp_buff[1]*0x100 + temp_buff[0];
+ 124   1      //          Temperature *= 0.625;
+ 125   1                      Temperature /= 16;
+ 126   1                      TempDelay(1);
+ 127   1      }
+ 128          
+ 129          /************************************************************
+ 130          *Function:18B20ID全处理
+ 131          *parameter:
+ 132          *Return:
+ 133          *Modify:
+ 134          *************************************************************/
+ 135          void TemperatuerResult(void)
+ 136          {
+ 137   1              Init18b20 ();
+ 138   1              WriteByte(0xcc);   //skip rom
+ 139   1              WriteByte(0x44);   //Temperature convert
+ 140   1      
+ 141   1              Init18b20 ();
+ 142   1              WriteByte(0xcc);   //skip rom
+ 143   1              WriteByte(0xbe);   //read Temperature
+ 144   1              p = temp_buff;
+ 145   1              read_bytes (9);
+ 146   1              GemTemp();
+ 147   1      }
+ 148          
+ 149          
+ 150          void GetTemp()
+ 151          {       
+ 152   1           if(TIM==100) //每隔 1000ms 读取温度
+ 153   1              {  TIM=0;
+ 154   2                 TemperatuerResult();
+ 155   2              }
+ 156   1      }
+ 157          
+ 158          /*************************************
+ 159           [ t1 (10ms)中断] 中断
+ 160          *************************************/
+ 161          void T1zd(void) interrupt 3 
+ 162          {
+ 163   1         TH1 = 0xD8;    //10
+ 164   1         TL1 = 0xF0;
+ 165   1         TIM++;
+ 166   1      
+ 167   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    268    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     15    ----
+   IDATA SIZE       =   ----       4
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

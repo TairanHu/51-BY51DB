@@ -1,0 +1,5 @@
+"1602.obj",
+"DS18B20.obj",
+"main.obj" 
+TO "DS18B20" 
+RAMSIZE(256) 
