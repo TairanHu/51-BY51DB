@@ -1,0 +1,179 @@
+C51 COMPILER V9.00   MCU                                                                   02/18/2016 21:00:25 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MCU
+OBJECT MODULE PLACED IN MCU.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE MCU.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /************************************************************
+   2              
+   3              基于DS1302的日历时钟（万年历）
+   4          
+   5              写入时间，并采用LCD1602显示时间 
+   6              实时时钟旁的排针用跳线帽短路  
+   7          ************************************************************/
+   8          #include "DS1302.h"     //包含单片机寄存器的头文件
+   9          #include "LCD1602.h"    //包含LCD1602头文件
+  10          extern uchar code num[10];
+  11          //显示秒
+  12          uchar second,minute,hour,day,month,year;      
+  13          uchar ReadValue;     //储存从1302读取的数据
+  14          uchar pic=0,num1=0,num2=0;
+  15          
+  16          uchar code table[]={
+  17          0x3f,0x06,0x5b,0x4f,
+  18          0x66,0x6d,0x7d,0x07,
+  19          0x7f,0x6f};
+  20          
+  21          void DisplaySecond(uchar x)
+  22          {
+  23   1        uchar i,j;     //j,k,l分别储存数字的十位和个位
+  24   1        i=x/10;//取十位
+  25   1        j=x%10;//取个位     
+  26   1        WriteAddress(0x49);    
+  27   1        WriteData(num[i]);    
+  28   1        WriteData(num[j]);    
+  29   1        delaynms(50);           
+  30   1      }
+  31          
+  32          //显示分
+  33          void DisplayMinute(uchar x)
+  34          {
+  35   1        uchar i,j;     
+  36   1        i=x/10;//取十位
+  37   1        j=x%10;//取个位     
+  38   1        WriteAddress(0x46);    
+  39   1        WriteData(num[i]);  
+  40   1        WriteData(num[j]);   
+  41   1        delaynms(50);           
+  42   1      }
+  43          
+  44          //显示时
+  45          void DisplayHour(uchar x)
+  46          {
+  47   1        uchar i,j;     //j,k,l分别储存温度的百位、十位和个位
+  48   1        i=x/10;//取十位
+  49   1        j=x%10;//取个位     
+  50   1        WriteAddress(0x43);   
+  51   1        WriteData(num[i]);    
+  52   1        WriteData(num[j]);    
+  53   1        delaynms(50);           
+  54   1      }
+  55          
+C51 COMPILER V9.00   MCU                                                                   02/18/2016 21:00:25 PAGE 2   
+
+  56          //显示日
+  57          void DisplayDay(uchar x)
+  58          {
+  59   1       uchar i,j;     //j,k,l分别储存温度的百位、十位和个位
+  60   1        i=x/10;//取十位
+  61   1        j=x%10;//取个位     
+  62   1        WriteAddress(0x0a);    
+  63   1        WriteData(num[i]);    
+  64   1        WriteData(num[j]);    
+  65   1        delaynms(50);         
+  66   1      }
+  67          
+  68          //显示月
+  69          void DisplayMonth(uchar x)
+  70          {
+  71   1        uchar i,j;     //j,k,l分别储存温度的百位、十位和个位
+  72   1        i=x/10;//取十位
+  73   1        j=x%10;//取个位     
+  74   1        WriteAddress(0x07);   
+  75   1        WriteData(num[i]);    
+  76   1        WriteData(num[j]);    
+  77   1        delaynms(50);         
+  78   1       }
+  79          
+  80          //显示年
+  81          void DisplayYear(uchar x)
+  82          {
+  83   1        uchar i,j;     //j,k,l分别储存温度的百位、十位和个位
+  84   1        i=x/10;//取十位
+  85   1        j=x%10;//取个位     
+  86   1        WriteAddress(0x04);   
+  87   1        WriteData(num[i]);    
+  88   1        WriteData(num[j]);    
+  89   1        delaynms(50);         
+  90   1      }
+  91          
+  92          //主函数
+  93          void main(void)
+  94          {
+  95   1        
+  96   1        
+  97   1        LcdInitiate();       //将液晶初始化
+  98   1        WriteAddress(0x00);
+  99   1        WriteData(' ');
+ 100   1        WriteAddress(0x02);  //写Date的显示地址,将在第1行第2列开始显示
+ 101   1        WriteData('2');      //将字符常量写入LCD
+ 102   1        WriteData('0');      //将字符常量写入LCD
+ 103   1        WriteAddress(0x06);  //写年月分隔符的显示地址， 显示在第1行第9列
+ 104   1        WriteData('-');      //将字符常量写入LCD
+ 105   1        WriteAddress(0x09);  //写月日分隔符的显示地址， 显示在第1行第12列
+ 106   1        WriteData('-');      //将字符常量写入LCD
+ 107   1        WriteAddress(0x45);  //写小时与分钟分隔符的显示地址， 显示在第2行第6列
+ 108   1        WriteData(':');      //将字符常量写入LCD
+ 109   1        WriteAddress(0x0d);  //写分钟与秒分隔符的显示地址， 显示在第2行第9列
+ 110   1        WriteData('^');      //将字符常量写入LCD
+ 111   1        WriteData('_');      //将字符常量写入LCD
+ 112   1        WriteData('^');      //将字符常量写入LCD
+ 113   1        WriteAddress(0x48);  //写分钟与秒分隔符的显示地址， 显示在第2行第9列
+ 114   1        WriteData(':');      //将字符常量写入LCD  
+ 115   1        WriteAddress(0x4d);  //写分钟与秒分隔符的显示地址， 显示在第2行第9列
+ 116   1        WriteData('^');      //将字符常量写入LCD
+ 117   1        WriteData('o');      //将字符常量写入LCD
+C51 COMPILER V9.00   MCU                                                                   02/18/2016 21:00:25 PAGE 3   
+
+ 118   1        WriteData('^');      //将字符常量写入LCD
+ 119   1        Init_DS1302();       //将1302初始化
+ 120   1        
+ 121   1      
+ 122   1          
+ 123   1        while(1)
+ 124   1        {
+ 125   2          
+ 126   2      
+ 127   2        {
+ 128   3          
+ 129   3            ReadValue = ReadSet1302(0x81);   //从秒寄存器读数据
+ 130   3          second=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F);//将读出数据转化
+ 131   3          DisplaySecond(second);          //显示秒
+ 132   3          
+ 133   3           ReadValue = ReadSet1302(0x83);  //从分寄存器读
+ 134   3          minute=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F); //将读出数据转化
+ 135   3          DisplayMinute(minute);         //显示分
+ 136   3           ReadValue = ReadSet1302(0x85);  //从分寄存器读
+ 137   3          hour=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F); //将读出数据转化
+ 138   3          DisplayHour(hour);               //显示小时
+ 139   3          ReadValue = ReadSet1302(0x87);  //从分寄存器读
+ 140   3          day=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F); //将读出数据转化
+ 141   3          DisplayDay(day);                //显示日
+ 142   3          ReadValue = ReadSet1302(0x89);  //从分寄存器读
+ 143   3          month=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F); //将读出数据转化
+ 144   3          DisplayMonth(month);            //显示月
+ 145   3          ReadValue = ReadSet1302(0x8d);  //从分寄存器读
+ 146   3          year=((ReadValue&0x70)>>4)*10 + (ReadValue&0x0F); //将读出数据转化
+ 147   3          DisplayYear(year);              //显示年  
+ 148   3        }
+ 149   2        }
+ 150   1      }
+ 151          
+ 152          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    564    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10      12
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
