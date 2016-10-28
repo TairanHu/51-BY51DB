@@ -1,0 +1,109 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/09/2015  21:28:40  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE LED_Shift.obj TO LED_Shift RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LED_Shift.obj (LED_SHIFT)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  LED_Shift (LED_SHIFT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0038H     UNIT         ?PR?MAIN?LED_SHIFT
+            CODE    003BH     001DH     UNIT         ?PR?DELAY?LED_SHIFT
+            CODE    0058H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   LED_Shift (LED_SHIFT)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?LED_SHIFT
+
+?PR?MAIN?LED_SHIFT
+  +--> ?PR?DELAY?LED_SHIFT
+
+
+
+SYMBOL TABLE OF MODULE:  LED_Shift (LED_SHIFT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LED_SHIFT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:003BH         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/09/2015  21:28:40  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:003BH         LINE#         10
+  C:003BH         LINE#         11
+  C:003BH         LINE#         13
+  C:003EH         LINE#         14
+  C:003EH         LINE#         15
+  C:004CH         LINE#         16
+  C:0057H         LINE#         17
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0003H         SYMBOL        led
+  D:0002H         SYMBOL        count
+  -------         ENDDO         
+  C:0003H         LINE#         58
+  C:0003H         LINE#         59
+  C:0003H         LINE#         60
+  C:0005H         LINE#         62
+  C:0005H         LINE#         63
+  C:0005H         LINE#         64
+  C:0007H         LINE#         65
+  C:000DH         LINE#         66
+  C:000DH         LINE#         67
+  C:000FH         LINE#         68
+  C:0012H         LINE#         69
+  C:001EH         LINE#         70
+  C:0020H         LINE#         72
+  C:0022H         LINE#         73
+  C:0028H         LINE#         74
+  C:0028H         LINE#         75
+  C:002AH         LINE#         76
+  C:002DH         LINE#         77
+  C:0039H         LINE#         78
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        LED_SHIFT
+
+Program Size: data=9.0 xdata=0 code=100
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

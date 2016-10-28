@@ -1,0 +1,120 @@
+C51 COMPILER V9.00   LED_SHIFT                                                             08/30/2015 12:23:18 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE LED_SHIFT
+OBJECT MODULE PLACED IN LED_Shift.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE LED_Shift.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************
+   2          
+   3                                                          LED移位实验
+   4                                                          
+   5                          连接方法：P1口排针和LED排针用排线连接起来
+   6                          
+   7          
+   8          ********************************************************/
+   9          /*
+  10          hlgkhklj
+  11          */
+  12          
+  13          
+  14          #include <reg52.h>
+  15          #include <intrins.h>
+  16          
+  17          #define uchar unsigned char
+  18          
+  19          
+  20          void delay();
+  21          
+  22          
+  23          /*
+  24          
+  25          采用C语言自带左移(<<)右移(>>)运算符实现LED移动
+  26          
+  27          
+  28          
+  29          */
+  30          //void main()      
+  31          //{
+  32          //      int count = 0;
+  33          //      P1 = 0xff;                      //单片机P1口置为高电平，LED熄灭
+  34          //      while(1)
+  35          //      {
+  36          //              for(count = 0; count <= 8; count++)
+  37          //              {
+  38          //                       P1 = P1 << count;
+  39          //                       delay();
+  40          //              }
+  41          //              P1 = 0xff;
+  42          //
+  43          //              for(count = 0; count <= 8; count++)
+  44          //              {
+  45          //                       P1 = P1 >> count;
+  46          //                       delay();
+  47          //              }
+  48          //              P1 = 0xff;
+  49          //                              
+  50          //      }
+  51          //
+  52          //}
+  53          
+  54          
+  55          /*
+C51 COMPILER V9.00   LED_SHIFT                                                             08/30/2015 12:23:18 PAGE 2   
+
+  56          利用C51库中自带函数实现移位
+  57          左移 _crol_
+  58          右移 _cror_
+  59          */
+  60          void main()
+  61          {
+  62   1              uchar led = 0xfe;
+  63   1              uchar count;
+  64   1              while(1)
+  65   1              {
+  66   2                      count = 7;
+  67   2                      while(count--)
+  68   2                      {
+  69   3                              P1 = led;
+  70   3                              delay();
+  71   3                              led = _crol_(led, 1);
+  72   3                      }
+  73   2                      
+  74   2                      count = 7;
+  75   2                      while(count--)
+  76   2                      {
+  77   3                              P1 = led;
+  78   3                              delay();
+  79   3                              led = _cror_(led, 1);
+  80   3                      }
+  81   2                                                      
+  82   2              }
+  83   1      
+  84   1      }
+  85          
+  86          void delay()
+  87          {
+  88   1              int i,j;
+  89   1              for(i = 0; i < 100; i++)
+  90   1              {
+  91   2                      for(j = 0; j < 110; j++) ;
+  92   2              }
+  93   1      }
+  94          
+  95          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     94    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

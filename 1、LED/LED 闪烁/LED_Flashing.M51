@@ -1,0 +1,96 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/13/2016  13:46:25  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE LED_Flashing.obj TO LED_Flashing RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LED_Flashing.obj (LED_FLASHING)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  LED_Flashing (LED_FLASHING)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001DH     UNIT         ?PR?DELAY?LED_FLASHING
+            CODE    0020H     000CH     UNIT         ?PR?MAIN?LED_FLASHING
+            CODE    002CH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   LED_Flashing (LED_FLASHING)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?LED_FLASHING
+
+?PR?MAIN?LED_FLASHING
+  +--> ?PR?DELAY?LED_FLASHING
+
+
+
+SYMBOL TABLE OF MODULE:  LED_Flashing (LED_FLASHING)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LED_FLASHING
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0003H         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  C:0020H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/13/2016  13:46:25  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  B:0090H.6       PUBLIC        LED
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         15
+  C:0003H         LINE#         16
+  C:0003H         LINE#         18
+  C:0006H         LINE#         19
+  C:0006H         LINE#         20
+  C:0014H         LINE#         21
+  C:001FH         LINE#         22
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  C:0020H         LINE#         24
+  C:0020H         LINE#         25
+  C:0020H         LINE#         26
+  C:0020H         LINE#         27
+  C:0020H         LINE#         28
+  C:0022H         LINE#         29
+  C:0025H         LINE#         30
+  C:0027H         LINE#         31
+  C:002AH         LINE#         32
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        LED_FLASHING
+
+Program Size: data=9.0 xdata=0 code=56
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
