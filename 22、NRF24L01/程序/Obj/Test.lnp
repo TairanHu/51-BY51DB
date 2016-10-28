@@ -1,0 +1,15 @@
+"..\Obj\main.obj",
+"..\Obj\1602.obj",
+"..\Obj\dig_c.obj",
+"..\Obj\hc165.obj",
+"..\Obj\member.obj",
+"..\Obj\mySPI.obj",
+"..\Obj\NRF24l01.obj",
+"..\Obj\oled.obj",
+"..\Obj\uart.obj",
+"..\Obj\Myiic.obj",
+"..\Obj\MPU6050.obj",
+"..\Obj\key.obj",
+"..\Obj\flash.obj" 
+TO "..\Obj\Test" 
+PRINT("..\Obj\Test.m51") RAMSIZE(256) 
