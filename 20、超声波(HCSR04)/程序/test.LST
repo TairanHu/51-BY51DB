@@ -1,0 +1,472 @@
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN test.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE test.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          //#include<delay.h>
+   3          #include <intrins.h>
+   4          
+   5          #define uchar unsigned char
+   6          #define uint unsigned int
+   7          
+   8          //sbit lcdrs=P2^5;
+   9          //sbit lcden=P2^3;
+  10          sbit trig=P3^6;               //超声波发送
+  11          sbit echo=P3^3;               //超声波接受
+  12          //P0____________DB0-DB7
+  13          uchar dis[]="Disp_HC-SR04";
+  14          uchar num[]="0123456789";
+  15          //uint distance;
+  16          uint timeh,timel,distance;
+  17          uint time;
+  18          //uchar timeH,timeL;
+  19          uchar succeed_flag = 0;
+  20          uchar flag = 0;
+  21          sbit test = P1^0;
+  22          
+  23          
+  24          sbit RS=P2^5;           //寄存器选择位，将RS位定义为P2.0引脚
+  25          sbit RW=P2^4;           //读写选择位，将RW位定义为P2.1引脚
+  26          sbit E=P2^3;            //使能信号位，将E位定义为P2.2引脚
+  27          sbit BF=P0^7;           //忙碌标志位，，将BF位定义为P0.7引脚
+  28          
+  29          void delay(uint z)
+  30          {
+  31   1       uint x,y;
+  32   1        for(x=z;x>0;x--)
+  33   1        for(y=110;y>0;y--);
+  34   1      }
+  35          //
+  36          void delay20us()
+  37           { 
+  38   1          uchar a ;
+  39   1          for(a=0;a<100;a++);
+  40   1       }
+  41          
+  42          
+  43          
+  44          
+  45          
+  46          
+  47          //延时1ms函数
+  48          void delay1ms()
+  49          {
+  50   1              uchar i,j;      
+  51   1       //     for(i=0;i<10;i++)
+  52   1              for(j=0;j<33;j++);       
+  53   1      }
+*** WARNING C280 IN LINE 50 OF TEST.C: 'i': unreferenced local variable
+  54          //延时nms函数
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 2   
+
+  55          void delaynms(uchar n)
+  56          {
+  57   1              uchar i;
+  58   1              for(i=0;i<n;i++)
+  59   1              delay1ms();
+  60   1      }
+  61          
+  62          //函数功能：判断液晶模块的忙碌状态，返回值：result。result=1，忙碌;result=0，不忙
+  63          bit BusyTest(void)
+  64          {
+  65   1          bit result;
+  66   1              RS=0;       //根据规定，RS为低电平，RW为高电平时，可以读状态
+  67   1          RW=1;
+  68   1          E=1;        //E=1，才允许读写
+  69   1          _nop_();   //空操作
+  70   1          _nop_();
+  71   1          _nop_(); 
+  72   1          _nop_();   //空操作四个机器周期，给硬件反应时间     
+  73   1          result=BF;  //将忙碌标志电平赋给result
+  74   1          E=0;         //将E恢复低电平
+  75   1          return result;
+  76   1      }
+  77          
+  78          //函数功能：将模式设置指令或显示地址写入液晶模块
+  79          void WriteInstruction (uchar dictate)
+  80          {   
+  81   1          while(BusyTest()==1);  
+  82   1               RS=0;                 
+  83   1               RW=0;   
+  84   1               E=0;                  
+  85   1                                 
+  86   1               _nop_();
+  87   1               _nop_();              
+  88   1               P0=dictate;           
+  89   1               _nop_();
+  90   1               _nop_();
+  91   1               _nop_();
+  92   1               _nop_();              
+  93   1               E=1;                  
+  94   1               _nop_();
+  95   1               _nop_();
+  96   1               _nop_();
+  97   1               _nop_();              
+  98   1                E=0;                 
+  99   1       }
+ 100          
+ 101          //函数功能：指定字符显示的实际地址
+ 102          void WriteAddress(uchar x)
+ 103          {
+ 104   1          WriteInstruction(x|0x80); //显示位置的确定方法规定为"80H+地址码x"
+ 105   1      }
+ 106          
+ 107          //函数功能：将数据(字符的标准ASCII码)写入液晶模块
+ 108          void WriteData(uchar y)
+ 109          {
+ 110   1          while(BusyTest()==1);  
+ 111   1                RS=1;           
+ 112   1                RW=0;
+ 113   1                E=0;         
+ 114   1                         
+ 115   1                P0=y;        
+ 116   1                _nop_();
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 3   
+
+ 117   1                _nop_();
+ 118   1                _nop_();
+ 119   1           _nop_();      
+ 120   1                E=1;         
+ 121   1                _nop_();
+ 122   1                _nop_();
+ 123   1                _nop_();
+ 124   1               _nop_();      
+ 125   1               E=0;          
+ 126   1      }
+ 127          
+ 128          void WriteString(uchar *dat)
+ 129          {
+ 130   1              while(*dat != '\0')     
+ 131   1              {
+ 132   2                      WriteData(*dat);
+ 133   2                      dat++;
+ 134   2              }
+ 135   1      }
+ 136          
+ 137          //函数功能：对LCD的显示模式进行初始化设置
+ 138          void LcdInitiate(void)
+ 139          {
+ 140   1          delaynms(15);              
+ 141   1          WriteInstruction(0x38);    
+ 142   1              delaynms(5);               
+ 143   1          WriteInstruction(0x38);
+ 144   1              delaynms(5);               
+ 145   1              WriteInstruction(0x38);    
+ 146   1              delaynms(5);               
+ 147   1              WriteInstruction(0x0c);    
+ 148   1              delaynms(5);               
+ 149   1              WriteInstruction(0x06);    
+ 150   1              delaynms(5);               
+ 151   1              WriteInstruction(0x01);    
+ 152   1              delaynms(5);             
+ 153   1      
+ 154   1       }
+ 155          
+ 156          
+ 157          
+ 158          
+ 159          //void delay(uint z)
+ 160          //{
+ 161          //uint x,y;
+ 162          //for(x=z;x>0;x--)
+ 163          //for(y=121;y>0;y--);
+ 164          //}
+ 165          //
+ 166          //void HC_init()
+ 167          //{
+ 168          //      TMOD=0x09;
+ 169          //      TR0=1;
+ 170          //      TH0=0;TL0=0;
+ 171          //}
+ 172          //
+ 173          //uint HC_jisuan()
+ 174          //{
+ 175          //      uint dist,timer;
+ 176          //      timer=TH0;
+ 177          //      timer<<=8;
+ 178          //      timer=timer|TL0;
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 4   
+
+ 179          //      dist=timer/53;                //晶振11.0592MHz 距离cm=微秒us/58
+ 180          //      return dist;                  //1个机器周期是12个时钟周期   timer*12/(58*11.0592)=timer/53
+ 181          //}                                    
+ 182          //
+ 183          //void HC_run()
+ 184          //{
+ 185          //      uint tempH=0x00,tempL=0x00;
+ 186          //      TH0=0;TL0=0;
+ 187          //      trig=0;
+ 188          //      trig=1;
+ 189          //      delay(1);
+ 190          //      trig=0;
+ 191          //      while((TH0-tempH!=0||TL0-tempL!=0)||(TH0==0&&TL0==0))
+ 192          //              {
+ 193          //                      tempH=TH0;
+ 194          //                      tempL=TL0;
+ 195          //              }
+ 196          //      delay(1);
+ 197          //}
+ 198          //
+ 199          //void lcd_write_com(uchar com)  //LCD写指令
+ 200          //{
+ 201          //      lcdrs=0;
+ 202          //      P0=com;
+ 203          //      delay(1);
+ 204          //      lcden=1;
+ 205          //      delay(1);
+ 206          //      lcden=0;
+ 207          //}
+ 208          //
+ 209          //void lcd_write_data(uchar date)  //LCD写数据
+ 210          //{
+ 211          //      lcdrs=1;
+ 212          //      P0=date;
+ 213          //      delay(1);
+ 214          //      lcden=1;
+ 215          //      delay(1);
+ 216          //      lcden=0;
+ 217          //}
+ 218          //
+ 219          //void lcd_init()  //LCD初始化
+ 220          //{
+ 221          //      lcden=0;
+ 222          //      lcd_write_com(0x38);
+ 223          //      lcd_write_com(0x0c);
+ 224          //      lcd_write_com(0x06);
+ 225          //      lcd_write_com(0x01);
+ 226          //}
+ 227          //
+ 228          //void lcd_display(uchar temp)
+ 229          //{
+ 230          //      uint i;
+ 231          //
+ 232          //      lcd_write_com(0x82);
+ 233          //      for(i=0;i<12;i++)
+ 234          //              {
+ 235          //                      lcd_write_data(dis[i]);
+ 236          //              }
+ 237          //
+ 238          //      lcd_write_com(0x80+0x41);
+ 239          //      lcd_write_data('D');
+ 240          //      lcd_write_data('i');
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 5   
+
+ 241          //      lcd_write_data('s');
+ 242          //      lcd_write_data('t');
+ 243          //      lcd_write_data('a');
+ 244          //      lcd_write_data('n');
+ 245          //      lcd_write_data('c');
+ 246          //      lcd_write_data('e');
+ 247          //      lcd_write_data(':');
+ 248          //      lcd_write_data(num[temp/100]);
+ 249          //      lcd_write_data(num[temp/10%10]);
+ 250          //      lcd_write_data(num[temp%10]);
+ 251          //      lcd_write_data('c');
+ 252          //      lcd_write_data('m');    
+ 253          //}
+ 254          
+ 255          //void main()
+ 256          //{
+ 257          ////    lcd_init();
+ 258          //      LcdInitiate();
+ 259          ////    HC_init();
+ 260          //      while(1)
+ 261          //      {
+ 262          ////            HC_run();
+ 263          ////            distance=HC_jisuan();
+ 264          ////            lcd_display(distance);
+ 265          //              
+ 266          //              WriteAddress(0x02);  //写开始的显示地址,将在第1行第2列开始显示
+ 267          //              WriteString("hkjhlkj") ;
+ 268          //
+ 269          //
+ 270          ////            delay(200);
+ 271          //      }
+ 272          //}
+ 273          
+ 274          void initime0()
+ 275          {
+ 276   1              TMOD=0x01;
+ 277   1              TH0=0;
+ 278   1              TL0=0;
+ 279   1              EA=0;
+ 280   1              ET0=0;
+ 281   1              EX1=0;
+ 282   1      }
+ 283          
+ 284          
+ 285          void estern() interrupt 2
+ 286          {
+ 287   1              timeh=TH0;
+ 288   1              timel=TL0;
+ 289   1      //      beer();
+ 290   1              flag=1;                                         //进入中断，标志位就置1
+ 291   1              EX1=0;                                          //同时关断外部中断和定时器
+ 292   1          TR0=0;
+ 293   1      }
+ 294          
+ 295          
+ 296          
+ 297          void diaoyong()
+ 298                  {
+ 299   1                      uint i;
+ 300   1                      uchar temp[3];
+ 301   1                      uchar xiaoshu;
+ 302   1                      EA=0;
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 6   
+
+ 303   1                      echo=1;                                 //为了检测电平的高低，首先必须拉高
+ 304   1                      trig=1;
+ 305   1                      delay20us();
+ 306   1                      trig=0;
+ 307   1                      while(echo==0);                 //如果进入中断 即接收到超声波就向下执行
+ 308   1                      flag=0;                                 //接收到就清除标志位
+ 309   1                      EA=1;                                   //同时打开总中断
+ 310   1                      EX1=1;                                  //打开外部中断
+ 311   1                      TR0=1;                                  //开定时器
+ 312   1                      TH0=0;                                  //定时器清零
+ 313   1                      TL0=0;
+ 314   1                      for(i=0;i<100;i++)              //等待测量的结果
+ 315   1                      {
+ 316   2      //                      display(distance);      //用100次显示循环来延时，解决数码管显示不亮问题
+ 317   2                      }
+ 318   1                      delay(1);                               //用延时函数数码管闪烁
+ 319   1                      TR0=0;                                  //延时一段时间后关断定时器
+ 320   1                      EX1=0;                                  //延时一段时间后关断外部中断
+ 321   1                      if(flag==1)                             //如果进入中断，说明测距已经测好
+ 322   1                      {
+ 323   2                              time=timeh*256+timel;//计算测定距离，并显示
+ 324   2                              distance=time*0.1720;
+ 325   2      //                      display(distance);
+ 326   2                              
+ 327   2                              temp[0] = distance/1000 + '0';
+ 328   2                              temp[1] = distance%1000/100 + '0';
+ 329   2                              temp[2] = distance%100/10 + '0';
+ 330   2                              xiaoshu = distance%10 + '0';
+ 331   2      
+ 332   2      
+ 333   2      
+ 334   2                              WriteAddress(0x02);  //写开始的显示地址,将在第1行第2列开始显示
+ 335   2                              WriteString(temp) ;
+ 336   2                              WriteData('.');
+ 337   2                              WriteData(xiaoshu);
+ 338   2      //                      WriteString("kjafhjk") ;
+ 339   2      
+ 340   2                              test=1;
+ 341   2                      }
+ 342   1                      if(flag==0)                             //如果没有进入中断，距离为0，同时灯闪烁
+ 343   1                      {
+ 344   2                              distance=0;
+ 345   2                              test=0;
+ 346   2                      }
+ 347   1              }
+ 348          
+ 349          
+ 350          
+ 351          void main()
+ 352          {
+ 353   1              initime0();
+ 354   1              LcdInitiate();
+ 355   1              test=1;
+ 356   1              trig=0;
+ 357   1              EA=1;
+ 358   1              while(1)
+ 359   1              {
+ 360   2                      diaoyong();
+ 361   2      //              display(distance);
+ 362   2              
+ 363   2              }
+ 364   1      }
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 7   
+
+ 365          
+ 366          
+ 367          //void main()  
+ 368          //{ 
+ 369          //    uint distance;
+ 370          //      uint time = 0;
+ 371          //    test =0;
+ 372          //    Trig=0;       //首先拉低脉冲输入引脚
+ 373          //    EA=1;         //打开总中断0 
+ 374          //    TMOD=0x10;    //定时器1，16位工作方式 
+ 375          //    while(1)        
+ 376          //    {
+ 377          //        EA=0;           //关总中断
+ 378          //        Trig=1;         //超声波输入端
+ 379          //        delay_20us();   //延时20us
+ 380          //        Trig=0;         //产生一个20us的脉冲
+ 381          //        while(Echo==0); //等待Echo回波引脚变高电平
+ 382          //        succeed_flag=0; //清测量成功标志
+ 383          //        EA=1; 
+ 384          //        EX1=1;          //打开外部中断0
+ 385          //        TH1=0;          //定时器1清零
+ 386          //        TL1=0;          //定时器1清零
+ 387          //        TF1=0;          //计数溢出标志
+ 388          //        TR1=1;          //启动定时器1
+ 389          //        delay(20);      //等待测量的结果
+ 390          //        TR1=0;          //关闭定时器1
+ 391          //        EX1=0;          //关闭外部中断0
+ 392          //       if(succeed_flag==1)
+ 393          //       {   
+ 394          //          time=timeH*256+timeL;
+ 395          //          distance=time*0.172;  //厘米
+ 396          ////          display(distance);
+ 397          //
+ 398          //                WriteAddress(0x02);  //写开始的显示地址,将在第1行第2列开始显示
+ 399          //                WriteString("hkjhlkj") ;
+ 400          //              
+ 401          //       }                         
+ 402          //      if(succeed_flag==0)
+ 403          //       {
+ 404          //          distance=0;                    //没有回波则清零
+ 405          //          test = !test;                  //测试灯变化
+ 406          //        }               
+ 407          //    }
+ 408          //}
+ 409          ////***************************************************************
+ 410          ////外部中断0，用做判断回波电平
+ 411          //void exter()  interrupt 1   // 外部中断0是0号
+ 412          // {   
+ 413          //     timeH =TH1;    //取出定时器的值
+ 414          //     timeL =TL1;    //取出定时器的值
+ 415          //     succeed_flag=1;//至成功测量的标志
+ 416          //     EX1=0;         //关闭外部中断
+ 417          // }
+ 418          ////****************************************************************
+ 419          ////定时器1中断,用做超声波测距计时
+ 420          //void timer1() interrupt 3  //
+ 421          //    {
+ 422          //         TH1=0;
+ 423          //         TL1=0;
+ 424          //     }
+ 425          //
+ 426          //
+C51 COMPILER V9.00   TEST                                                                  08/27/2015 18:45:44 PAGE 8   
+
+ 427          //
+ 428          //
+ 429          //
+ 430          
+ 431          
+ 432          
+ 433          
+ 434          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    510    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     34       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
