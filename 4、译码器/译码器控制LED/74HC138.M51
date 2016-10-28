@@ -1,0 +1,111 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/11/2015  13:00:18  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE 74HC138.obj TO 74HC138 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  74HC138.obj (74HC138)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  74HC138 (74HC138)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     004AH     UNIT         ?PR?MAIN?74HC138
+            CODE    004DH     001DH     UNIT         ?PR?DELAY?74HC138
+            CODE    006AH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   74HC138 (74HC138)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?74HC138
+
+?PR?MAIN?74HC138
+  +--> ?PR?DELAY?74HC138
+
+
+
+SYMBOL TABLE OF MODULE:  74HC138 (74HC138)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        74HC138
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:004DH         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/11/2015  13:00:18  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  B:00A0H.2       PUBLIC        HC138A
+  B:00A0H.3       PUBLIC        HC138B
+  B:00A0H.4       PUBLIC        HC138C
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:004DH         LINE#         18
+  C:004DH         LINE#         19
+  C:004DH         LINE#         21
+  C:0050H         LINE#         22
+  C:0050H         LINE#         23
+  C:005EH         LINE#         24
+  C:0069H         LINE#         25
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0003H         LINE#         30
+  C:0003H         LINE#         31
+  C:0003H         LINE#         32
+  C:0009H         LINE#         33
+  C:000CH         LINE#         34
+  C:0012H         LINE#         35
+  C:0015H         LINE#         36
+  C:001BH         LINE#         37
+  C:001EH         LINE#         38
+  C:0024H         LINE#         39
+  C:0027H         LINE#         40
+  C:002DH         LINE#         41
+  C:0030H         LINE#         42
+  C:0036H         LINE#         43
+  C:0039H         LINE#         44
+  C:003FH         LINE#         45
+  C:0042H         LINE#         46
+  C:0048H         LINE#         47
+  C:004BH         LINE#         50
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        74HC138
+
+Program Size: data=9.0 xdata=0 code=118
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
