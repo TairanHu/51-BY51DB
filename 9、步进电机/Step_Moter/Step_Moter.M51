@@ -1,0 +1,152 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/12/2015  17:33:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE Step_Moter.obj TO Step_Moter RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  Step_Moter.obj (STEP_MOTER)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  Step_Moter (STEP_MOTER)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0011H     UNIT         ?DT?STEP_MOTER
+            IDATA   0019H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0015H     UNIT         ?C_INITSEG
+                    0018H     0003H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+            CODE    001EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    00AAH     004DH     UNIT         ?PR?MAIN?STEP_MOTER
+            CODE    00F7H     0024H     UNIT         ?PR?DELAY?STEP_MOTER
+            CODE    011BH     000FH     UNIT         ?PR?SYSTEM_INI?STEP_MOTER
+            CODE    012AH     0009H     UNIT         ?PR?T1ZD?STEP_MOTER
+
+
+
+OVERLAY MAP OF MODULE:   Step_Moter (STEP_MOTER)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?STEP_MOTER
+  +--> ?C_INITSEG
+
+?PR?MAIN?STEP_MOTER
+  +--> ?PR?DELAY?STEP_MOTER
+
+
+
+SYMBOL TABLE OF MODULE:  Step_Moter (STEP_MOTER)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        STEP_MOTER
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/12/2015  17:33:17  PAGE 2
+
+
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0008H         PUBLIC        reverse
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:0010H         PUBLIC        foward
+  D:00A8H         PUBLIC        IE
+  C:00FEH         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  C:00AAH         PUBLIC        main
+  C:011BH         PUBLIC        system_Ini
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  D:0018H         PUBLIC        timer1
+  B:0088H.6       PUBLIC        TR1
+  C:012AH         PUBLIC        T1zd
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          L?0030
+  -------         ENDPROC       L?0030
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:00FEH         LINE#         25
+  C:00FEH         LINE#         26
+  C:00FEH         LINE#         28
+  C:0101H         LINE#         29
+  C:011AH         LINE#         30
+  -------         ENDPROC       DELAY
+  -------         PROC          SYSTEM_INI
+  C:011BH         LINE#         32
+  C:011BH         LINE#         33
+  C:011BH         LINE#         34
+  C:011EH         LINE#         36
+  C:0121H         LINE#         37
+  C:0124H         LINE#         38
+  C:0126H         LINE#         39
+  C:0129H         LINE#         40
+  -------         ENDPROC       SYSTEM_INI
+  -------         PROC          MAIN
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0082H         SYMBOL        j
+  -------         ENDDO         
+  C:00AAH         LINE#         42
+  C:00AAH         LINE#         43
+  C:00AAH         LINE#         45
+  C:00ABH         LINE#         46
+  C:00AFH         LINE#         48
+  C:00AFH         LINE#         49
+  C:00AFH         LINE#         50
+  C:00B2H         LINE#         51
+  C:00B2H         LINE#         52
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/12/2015  17:33:17  PAGE 3
+
+
+  C:00B7H         LINE#         53
+  C:00B7H         LINE#         54
+  C:00B9H         LINE#         55
+  C:00BCH         LINE#         56
+  C:00C5H         LINE#         57
+  C:00D2H         LINE#         59
+  C:00DDH         LINE#         60
+  C:00DDH         LINE#         61
+  C:00E2H         LINE#         62
+  C:00E2H         LINE#         63
+  C:00E4H         LINE#         64
+  C:00E7H         LINE#         65
+  C:00F0H         LINE#         66
+  -------         ENDPROC       MAIN
+  -------         PROC          T1ZD
+  C:012AH         LINE#         76
+  C:012AH         LINE#         78
+  C:012DH         LINE#         79
+  C:0130H         LINE#         80
+  C:0132H         LINE#         82
+  -------         ENDPROC       T1ZD
+  -------         ENDMOD        STEP_MOTER
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SYSTEM_INI?STEP_MOTER
+
+Program Size: data=26.0 xdata=0 code=304
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
