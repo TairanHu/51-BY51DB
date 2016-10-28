@@ -1,0 +1,122 @@
+C51 COMPILER V9.00   MATRIX_KEYBOARD                                                       08/09/2015 23:35:02 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MATRIX_KEYBOARD
+OBJECT MODULE PLACED IN Matrix_Keyboard.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE Matrix_Keyboard.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************
+   2          
+   3                          单片机采集矩阵键盘的信息，用LED显示状态
+   4          
+   5                          需要好好理解矩阵键盘扫描原理
+   6          
+   7          ********************************************************/
+   8          
+   9          #include<reg52.h>
+  10          #define uchar unsigned char
+  11          #define uint unsigned int
+  12          
+  13          #define keyport (P1)
+  14          #define keystate0 0             //按键确认状态
+  15          #define keystate1 1             //按键无动作状态
+  16          char keystate=1;        //按键状态初始化为按键无动作状态
+  17          uchar keynum=0;
+  18          
+  19          uchar code table[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 
+             -0x79, 0x71};
+  20          
+  21          void delayms(uint x)    //1ms
+  22          {
+  23   1              uint y,z;
+  24   1              for(y=x;y>0;y--)
+  25   1                      for(z=111;z>0;z--);
+  26   1      }
+  27          
+  28          
+  29          void keyscan()
+  30          {
+  31   1              uchar temp1,temp2,column,row;
+  32   1              switch(keystate)                
+  33   1              {
+  34   2                      case keystate0: //keystate0，按键按下确认状态，下一状态为keystate1(按键无动作状态)
+  35   2                              keyport=0x0f;
+  36   2                              temp1=keyport;
+  37   2                              keyport=0xf0;
+  38   2                              temp2=keyport;                  
+  39   2                              if((temp1|temp2)!=0xff)
+  40   2                              {
+  41   3                                      temp1|=temp2;
+  42   3                                      if(!(temp1&0x80)) //1000 0000
+  43   3                                              row=3;
+  44   3                                      else 
+  45   3                                              if(!(temp1&0x40))  //0100 0000
+  46   3                                                      row=2;  
+  47   3                                              else
+  48   3                                                      if(!(temp1&0x20))
+  49   3                                                              row=1;
+  50   3                                                      else
+  51   3                                                              if(!(temp1&0x10))
+  52   3                                                                      row=0;
+  53   3                                      if(!(temp1&0x08))        //0000 1000
+  54   3                                              column=3;
+C51 COMPILER V9.00   MATRIX_KEYBOARD                                                       08/09/2015 23:35:02 PAGE 2   
+
+  55   3                                      else 
+  56   3                                              if(!(temp1&0x04))
+  57   3                                                      column=2;       
+  58   3                                              else
+  59   3                                                      if(!(temp1&0x02))
+  60   3                                                              column=1;
+  61   3                                                      else
+  62   3                                                              if(!(temp1&0x01))
+  63   3                                                                      column=0;
+  64   3                                      keynum=column*4+row;
+  65   3                                      while(!(keyport==0x0f|keyport==0xf0));
+  66   3                                      keystate=keystate1;
+  67   3                                      break;                          
+  68   3                                      
+  69   3                              }
+  70   2                              else
+  71   2                                      keystate=keystate1;
+  72   2                              break;
+  73   2                      case keystate1: //keystate1，按键无动作状态，下一状态为keystate0(按键无动作状态)
+  74   2                              keyport=0x0f;
+  75   2                              temp1=keyport;
+  76   2                              keyport=0xf0;
+  77   2                              temp2=keyport;                  
+  78   2                              if((temp1|temp2)!=0xff)
+  79   2                              {
+  80   3                                      keystate=keystate0;
+  81   3                              }
+  82   2                              else
+  83   2                                      keystate=keystate1;
+  84   2                              break;
+  85   2              }
+  86   1      }
+  87          
+  88          void main()
+  89          {
+  90   1              while(1)
+  91   1              {
+  92   2                      keyscan();
+  93   2      //              P0 = ~keynum;
+  94   2                      P0 = table[keynum];
+  95   2              }
+  96   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    193    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
