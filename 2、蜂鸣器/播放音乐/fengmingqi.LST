@@ -1,0 +1,297 @@
+C51 COMPILER V9.00   FENGMINGQI                                                            07/31/2015 22:34:03 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE FENGMINGQI
+OBJECT MODULE PLACED IN fengmingqi.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE fengmingqi.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg52.h"
+   2          #define SYSTEM_OSC              12000000        //定义晶振频率12000000HZ
+   3          #define SOUND_SPACE     4/5             //定义普通音符演奏的长度分率,//每4分音符间隔
+   4          
+   5          sbit    BeepIO=P1^0;
+   6          
+   7          
+   8          
+   9          unsigned int  code FreTab[12]  = { 262,277,294,311,330,349,369,392,415,440,466,494 }; //原始频率表
+  10          unsigned char code SignTab[7]  = { 0,2,4,5,7,9,11 };                                                              //1~7在频率表中的位置
+  11          unsigned char code LengthTab[7]= { 1,2,4,8,16,32,64 };                                          
+  12          unsigned char Sound_Temp_TH0,Sound_Temp_TL0;    //音符定时器初值暂存 
+  13          unsigned char Sound_Temp_TH1,Sound_Temp_TL1;    //音长定时器初值暂存
+  14          
+  15          
+  16          //*****************************Music******************************************************
+  17          //挥着翅膀的女孩
+  18          unsigned char code Music_Girl[]={ 0x17,0x02, 0x17,0x03, 0x18,0x03, 0x19,0x02, 0x15,0x03,
+  19                                            0x16,0x03, 0x17,0x03, 0x17,0x03, 0x17,0x03, 0x18,0x03,
+  20                                            0x19,0x02, 0x16,0x03, 0x17,0x03, 0x18,0x02, 0x18,0x03,
+  21                                            0x17,0x03, 0x15,0x02, 0x18,0x03, 0x17,0x03, 0x18,0x02,
+  22                                            0x10,0x03, 0x15,0x03, 0x16,0x02, 0x15,0x03, 0x16,0x03,
+  23                                            0x17,0x02, 0x17,0x03, 0x18,0x03, 0x19,0x02, 0x1A,0x03,
+  24                                            0x1B,0x03, 0x1F,0x03, 0x1F,0x03, 0x17,0x03, 0x18,0x03,
+  25                                            0x19,0x02, 0x16,0x03, 0x17,0x03, 0x18,0x03, 0x17,0x03,
+  26                                            0x18,0x03, 0x1F,0x03, 0x1F,0x02, 0x16,0x03, 0x17,0x03,
+  27                                            0x18,0x03, 0x17,0x03, 0x18,0x03, 0x20,0x03, 0x20,0x02,
+  28                                            0x1F,0x03, 0x1B,0x03, 0x1F,0x66, 0x20,0x03, 0x21,0x03,
+  29                                            0x20,0x03, 0x1F,0x03, 0x1B,0x03, 0x1F,0x66, 0x1F,0x03,
+  30                                            0x1B,0x03, 0x19,0x03, 0x19,0x03, 0x15,0x03, 0x1A,0x66,
+  31                                            0x1A,0x03, 0x19,0x03, 0x15,0x03, 0x15,0x03, 0x17,0x03,
+  32                                            0x16,0x66, 0x17,0x04, 0x18,0x04, 0x18,0x03, 0x19,0x03,
+  33                                            0x1F,0x03, 0x1B,0x03, 0x1F,0x66, 0x20,0x03, 0x21,0x03,
+  34                                            0x20,0x03, 0x1F,0x03, 0x1B,0x03, 0x1F,0x66, 0x1F,0x03,
+  35                                            0x1B,0x03, 0x19,0x03, 0x19,0x03, 0x15,0x03, 0x1A,0x66,
+  36                                            0x1A,0x03, 0x19,0x03, 0x19,0x03, 0x1F,0x03, 0x1B,0x03,
+  37                                            0x1F,0x00, 0x1A,0x03, 0x1A,0x03, 0x1A,0x03, 0x1B,0x03,
+  38                                            0x1B,0x03, 0x1A,0x03, 0x19,0x03, 0x19,0x02, 0x17,0x03,
+  39                                            0x15,0x17, 0x15,0x03, 0x16,0x03, 0x17,0x03, 0x18,0x03,
+  40                                            0x17,0x04, 0x18,0x0E, 0x18,0x03, 0x17,0x04, 0x18,0x0E,
+  41                                            0x18,0x66, 0x17,0x03, 0x18,0x03, 0x17,0x03, 0x18,0x03,
+  42                                            0x20,0x03, 0x20,0x02, 0x1F,0x03, 0x1B,0x03, 0x1F,0x66,
+  43                                            0x20,0x03, 0x21,0x03, 0x20,0x03, 0x1F,0x03, 0x1B,0x03,
+  44                                            0x1F,0x66, 0x1F,0x04, 0x1B,0x0E, 0x1B,0x03, 0x19,0x03,
+  45                                            0x19,0x03, 0x15,0x03, 0x1A,0x66, 0x1A,0x03, 0x19,0x03,
+  46                                            0x15,0x03, 0x15,0x03, 0x17,0x03, 0x16,0x66, 0x17,0x04,
+  47                                            0x18,0x04, 0x18,0x03, 0x19,0x03, 0x1F,0x03, 0x1B,0x03,
+  48                                            0x1F,0x66, 0x20,0x03, 0x21,0x03, 0x20,0x03, 0x1F,0x03,
+  49                                            0x1B,0x03, 0x1F,0x66, 0x1F,0x03, 0x1B,0x03, 0x19,0x03,
+  50                                            0x19,0x03, 0x15,0x03, 0x1A,0x66, 0x1A,0x03, 0x19,0x03,
+  51                                            0x19,0x03, 0x1F,0x03, 0x1B,0x03, 0x1F,0x00, 0x18,0x02,
+  52                                            0x18,0x03, 0x1A,0x03, 0x19,0x0D, 0x15,0x03, 0x15,0x02,
+  53                                            0x18,0x66, 0x16,0x02, 0x17,0x02, 0x15,0x00, 0x00,0x00};
+  54          //同一首歌
+  55          unsigned char code Music_Same[]={ 0x0F,0x01, 0x15,0x02, 0x16,0x02, 0x17,0x66, 0x18,0x03,
+C51 COMPILER V9.00   FENGMINGQI                                                            07/31/2015 22:34:03 PAGE 2   
+
+  56                                            0x17,0x02, 0x15,0x02, 0x16,0x01, 0x15,0x02, 0x10,0x02,
+  57                                            0x15,0x00, 0x0F,0x01, 0x15,0x02, 0x16,0x02, 0x17,0x02,
+  58                                            0x17,0x03, 0x18,0x03, 0x19,0x02, 0x15,0x02, 0x18,0x66,
+  59                                            0x17,0x03, 0x19,0x02, 0x16,0x03, 0x17,0x03, 0x16,0x00,
+  60                                            0x17,0x01, 0x19,0x02, 0x1B,0x02, 0x1B,0x70, 0x1A,0x03,
+  61                                            0x1A,0x01, 0x19,0x02, 0x19,0x03, 0x1A,0x03, 0x1B,0x02,
+  62                                            0x1A,0x0D, 0x19,0x03, 0x17,0x00, 0x18,0x66, 0x18,0x03,
+  63                                            0x19,0x02, 0x1A,0x02, 0x19,0x0C, 0x18,0x0D, 0x17,0x03,
+  64                                            0x16,0x01, 0x11,0x02, 0x11,0x03, 0x10,0x03, 0x0F,0x0C,
+  65                                            0x10,0x02, 0x15,0x00, 0x1F,0x01, 0x1A,0x01, 0x18,0x66,
+  66                                            0x19,0x03, 0x1A,0x01, 0x1B,0x02, 0x1B,0x03, 0x1B,0x03,
+  67                                            0x1B,0x0C, 0x1A,0x0D, 0x19,0x03, 0x17,0x00, 0x1F,0x01,
+  68                                            0x1A,0x01, 0x18,0x66, 0x19,0x03, 0x1A,0x01, 0x10,0x02,
+  69                                            0x10,0x03, 0x10,0x03, 0x1A,0x0C, 0x18,0x0D, 0x17,0x03,
+  70                                            0x16,0x00, 0x0F,0x01, 0x15,0x02, 0x16,0x02, 0x17,0x70,
+  71                                            0x18,0x03, 0x17,0x02, 0x15,0x03, 0x15,0x03, 0x16,0x66,
+  72                                            0x16,0x03, 0x16,0x02, 0x16,0x03, 0x15,0x03, 0x10,0x02,
+  73                                            0x10,0x01, 0x11,0x01, 0x11,0x66, 0x10,0x03, 0x0F,0x0C,
+  74                                            0x1A,0x02, 0x19,0x02, 0x16,0x03, 0x16,0x03, 0x18,0x66,
+  75                                            0x18,0x03, 0x18,0x02, 0x17,0x03, 0x16,0x03, 0x19,0x00,
+  76                                            0x00,0x00 };
+  77          //两只蝴蝶                                  
+  78          unsigned char code Music_Two[] ={ 0x17,0x03, 0x16,0x03, 0x17,0x01, 0x16,0x03, 0x17,0x03,
+  79                                            0x16,0x03, 0x15,0x01, 0x10,0x03, 0x15,0x03, 0x16,0x02,
+  80                                            0x16,0x0D, 0x17,0x03, 0x16,0x03, 0x15,0x03, 0x10,0x03,
+  81                                            0x10,0x0E, 0x15,0x04, 0x0F,0x01, 0x17,0x03, 0x16,0x03,
+  82                                            0x17,0x01, 0x16,0x03, 0x17,0x03, 0x16,0x03, 0x15,0x01,
+  83                                            0x10,0x03, 0x15,0x03, 0x16,0x02, 0x16,0x0D, 0x17,0x03,
+  84                                            0x16,0x03, 0x15,0x03, 0x10,0x03, 0x15,0x03, 0x16,0x01,
+  85                                            0x17,0x03, 0x16,0x03, 0x17,0x01, 0x16,0x03, 0x17,0x03,
+  86                                            0x16,0x03, 0x15,0x01, 0x10,0x03, 0x15,0x03, 0x16,0x02,
+  87                                            0x16,0x0D, 0x17,0x03, 0x16,0x03, 0x15,0x03, 0x10,0x03,
+  88                                            0x10,0x0E, 0x15,0x04, 0x0F,0x01, 0x17,0x03, 0x19,0x03,
+  89                                            0x19,0x01, 0x19,0x03, 0x1A,0x03, 0x19,0x03, 0x17,0x01,
+  90                                            0x16,0x03, 0x16,0x03, 0x16,0x02, 0x16,0x0D, 0x17,0x03,
+  91                                            0x16,0x03, 0x15,0x03, 0x10,0x03, 0x10,0x0D, 0x15,0x00,
+  92                                            0x19,0x03, 0x19,0x03, 0x1A,0x03, 0x1F,0x03, 0x1B,0x03,
+  93                                            0x1B,0x03, 0x1A,0x03, 0x17,0x0D, 0x16,0x03, 0x16,0x03,
+  94                                            0x16,0x0D, 0x17,0x01, 0x17,0x03, 0x17,0x03, 0x19,0x03,
+  95                                            0x1A,0x02, 0x1A,0x02, 0x10,0x03, 0x17,0x0D, 0x16,0x03,
+  96                                            0x16,0x01, 0x17,0x03, 0x19,0x03, 0x19,0x03, 0x17,0x03,
+  97                                            0x19,0x02, 0x1F,0x02, 0x1B,0x03, 0x1A,0x03, 0x1A,0x0E,
+  98                                            0x1B,0x04, 0x17,0x02, 0x1A,0x03, 0x1A,0x03, 0x1A,0x0E,
+  99                                            0x1B,0x04, 0x1A,0x03, 0x19,0x03, 0x17,0x03, 0x16,0x03,
+ 100                                            0x17,0x0D, 0x16,0x03, 0x17,0x03, 0x19,0x01, 0x19,0x03,
+ 101                                            0x19,0x03, 0x1A,0x03, 0x1F,0x03, 0x1B,0x03, 0x1B,0x03,
+ 102                                            0x1A,0x03, 0x17,0x0D, 0x16,0x03, 0x16,0x03, 0x16,0x03,
+ 103                                            0x17,0x01, 0x17,0x03, 0x17,0x03, 0x19,0x03, 0x1A,0x02,
+ 104                                            0x1A,0x02, 0x10,0x03, 0x17,0x0D, 0x16,0x03, 0x16,0x01,
+ 105                                            0x17,0x03, 0x19,0x03, 0x19,0x03, 0x17,0x03, 0x19,0x03,
+ 106                                            0x1F,0x02, 0x1B,0x03, 0x1A,0x03, 0x1A,0x0E, 0x1B,0x04,
+ 107                                            0x17,0x02, 0x1A,0x03, 0x1A,0x03, 0x1A,0x0E, 0x1B,0x04,
+ 108                                            0x17,0x16, 0x1A,0x03, 0x1A,0x03, 0x1A,0x0E, 0x1B,0x04,
+ 109                                            0x1A,0x03, 0x19,0x03, 0x17,0x03, 0x16,0x03, 0x0F,0x02,
+ 110                                            0x10,0x03, 0x15,0x00, 0x00,0x00 };
+ 111          //***********************************************************************************
+ 112          
+ 113          void Delay1ms(unsigned int count)
+ 114          {
+ 115   1              unsigned int i,j;
+ 116   1              for(i=0;i<count;i++)
+ 117   1              for(j=0;j<120;j++);
+C51 COMPILER V9.00   FENGMINGQI                                                            07/31/2015 22:34:03 PAGE 3   
+
+ 118   1      }
+ 119          
+ 120          void InitialSound(void)
+ 121          {
+ 122   1              BeepIO = 0;
+ 123   1              Sound_Temp_TH1 = (65535-(1/1200)*SYSTEM_OSC)/256;       // 计算TL1应装入的初值  (10ms的初装值)
+ 124   1              Sound_Temp_TL1 = (65535-(1/1200)*SYSTEM_OSC)%256;       // 计算TH1应装入的初值 
+ 125   1              TH1 = Sound_Temp_TH1;
+ 126   1              TL1 = Sound_Temp_TL1;
+ 127   1              TMOD  |= 0x11;
+ 128   1              ET0    = 1;     
+ 129   1              TR0        = 0;
+ 130   1              ET1        = 0;
+ 131   1              TR1    = 0;
+ 132   1              EA     = 1;
+ 133   1      }
+ 134          
+ 135          //**************************************************************************
+ 136          void Play(unsigned char *Sound,unsigned char Signature,unsigned Octachord,unsigned int Speed)
+ 137          {
+ 138   1              unsigned int NewFreTab[12];             //新的频率表
+ 139   1              unsigned char i,j;
+ 140   1              unsigned int Point,LDiv,LDiv0,LDiv1,LDiv2,LDiv4,CurrentFre,Temp_T,SoundLength;
+ 141   1              unsigned char Tone,Length,SL,SH,SM,SLen,XG,FD;
+ 142   1              for(i=0;i<12;i++)                               // 根据调号及升降八度来生成新的频率表 
+ 143   1              {
+ 144   2                      j = i + Signature;
+ 145   2                      if(j > 11)
+ 146   2                      {
+ 147   3                              j = j-12;
+ 148   3                              NewFreTab[i] = FreTab[j]*2;
+ 149   3                      }
+ 150   2                      else
+ 151   2                              NewFreTab[i] = FreTab[j];
+ 152   2      
+ 153   2                      if(Octachord == 1)
+ 154   2                              NewFreTab[i]>>=2;
+ 155   2                      else if(Octachord == 3)
+ 156   2                              NewFreTab[i]<<=2;
+ 157   2              }                                                                       
+ 158   1              
+ 159   1              SoundLength = 0;
+ 160   1              while(Sound[SoundLength] != 0x00)       //计算歌曲长度
+ 161   1              {
+ 162   2                      SoundLength+=2;
+ 163   2              }
+ 164   1      
+ 165   1              Point = 0;
+ 166   1              Tone   = Sound[Point];  
+ 167   1              Length = Sound[Point+1];                        // 读出第一个音符和它时时值
+ 168   1              
+ 169   1              LDiv0 = 12000/Speed;                            // 算出1分音符的长度(几个10ms)  
+ 170   1              LDiv4 = LDiv0/4;                                        // 算出4分音符的长度 
+ 171   1              LDiv4 = LDiv4-LDiv4*SOUND_SPACE;        // 普通音最长间隔标准 
+ 172   1              TR0       = 0;
+ 173   1              TR1   = 1;
+ 174   1              while(Point < SoundLength)
+ 175   1              {
+ 176   2                      SL=Tone%10;                                                             //计算出音符 
+ 177   2                      SM=Tone/10%10;                                                          //计算出高低音 
+ 178   2                      SH=Tone/100;                                                            //计算出是否升半 
+ 179   2                      CurrentFre = NewFreTab[SignTab[SL-1]+SH];       //查出对应音符的频率    
+C51 COMPILER V9.00   FENGMINGQI                                                            07/31/2015 22:34:03 PAGE 4   
+
+ 180   2                      if(SL!=0)
+ 181   2                      {
+ 182   3                              if (SM==1) CurrentFre >>= 2;            //低音 
+ 183   3                              if (SM==3) CurrentFre <<= 2;            //高音
+ 184   3                              Temp_T = 65536-(50000/CurrentFre)*10/(12000000/SYSTEM_OSC);//计算计数器初值
+ 185   3                              Sound_Temp_TH0 = Temp_T/256; 
+ 186   3                              Sound_Temp_TL0 = Temp_T%256; 
+ 187   3                              TH0 = Sound_Temp_TH0;  
+ 188   3                              TL0 = Sound_Temp_TL0 + 12; //加12是对中断延时的补偿 
+ 189   3                      }
+ 190   2                      SLen=LengthTab[Length%10];      //算出是几分音符
+ 191   2                      XG=Length/10%10;                        //算出音符类型(0普通1连音2顿音) 
+ 192   2                      FD=Length/100;
+ 193   2                      LDiv=LDiv0/SLen;                        //算出连音音符演奏的长度(多少个10ms)
+ 194   2                      if (FD==1) 
+ 195   2                              LDiv=LDiv+LDiv/2;
+ 196   2                      if(XG!=1)       
+ 197   2                              if(XG==0)                               //算出普通音符的演奏长度 
+ 198   2                                      if (SLen<=4)    
+ 199   2                                              LDiv1=LDiv-LDiv4;
+ 200   2                                      else
+ 201   2                                              LDiv1=LDiv*SOUND_SPACE;
+ 202   2                              else
+ 203   2                                      LDiv1=LDiv/2;           //算出顿音的演奏长度 
+ 204   2                      else
+ 205   2                              LDiv1=LDiv;
+ 206   2                      if(SL==0) LDiv1=0;
+ 207   2                              LDiv2=LDiv-LDiv1;               //算出不发音的长度 
+ 208   2                      if (SL!=0)
+ 209   2                      {
+ 210   3                              TR0=1;
+ 211   3                              for(i=LDiv1;i>0;i--)    //发规定长度的音 
+ 212   3                              {
+ 213   4                                      while(TF1==0);
+ 214   4                                      TH1 = Sound_Temp_TH1;
+ 215   4                                      TL1 = Sound_Temp_TL1;
+ 216   4                                      TF1=0;
+ 217   4                              }
+ 218   3                      }
+ 219   2                      if(LDiv2!=0)
+ 220   2                      {
+ 221   3                              TR0=0; BeepIO=0;
+ 222   3                              for(i=LDiv2;i>0;i--)    //音符间的间隔
+ 223   3                              {
+ 224   4                                      while(TF1==0);
+ 225   4                                      TH1 = Sound_Temp_TH1;
+ 226   4                                      TL1 = Sound_Temp_TL1;
+ 227   4                                      TF1=0;
+ 228   4                              }
+ 229   3                      }
+ 230   2                      Point+=2; 
+ 231   2                      Tone=Sound[Point];
+ 232   2                      Length=Sound[Point+1];
+ 233   2              }
+ 234   1              BeepIO = 0;
+ 235   1      }
+ 236          
+ 237          void main()
+ 238          {
+ 239   1      //      P2=0xff;
+ 240   1      //      while(1); 
+ 241   1              InitialSound();
+C51 COMPILER V9.00   FENGMINGQI                                                            07/31/2015 22:34:03 PAGE 5   
+
+ 242   1              while(1)
+ 243   1              {
+ 244   2              
+ 245   2      //              if(P2^1==0)
+ 246   2      //              {
+ 247   2      //                      Delay1ms(20);
+ 248   2      //                      if(P2^1==0)       
+ 249   2      //              }
+ 250   2      //              if(P2^2==0)
+ 251   2      //              {
+ 252   2      //                      Delay1ms(20);
+ 253   2      //                      if(P2^2==0)       Play(Music_Two,0,3,360); 
+ 254   2      //              }                                 
+ 255   2                      Play(Music_Girl,0,3,360);
+ 256   2                      Play(Music_Same,0,3,360);       
+ 257   2              
+ 258   2              }
+ 259   1      }
+ 260          
+ 261          void BeepTimer0(void) interrupt 1       //音符发生中断
+ 262          {
+ 263   1              BeepIO = !BeepIO;
+ 264   1              TH0    = Sound_Temp_TH0;
+ 265   1              TL0    = Sound_Temp_TL0;
+ 266   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    804    ----
+   CONSTANT SIZE    =    936    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4      51
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
