@@ -1,0 +1,193 @@
+C51 COMPILER V9.00   LCD1602                                                               08/19/2015 23:47:23 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE LCD1602
+OBJECT MODULE PLACED IN LCD1602.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE LCD1602.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include<intrins.h>
+   3          
+   4          #define uchar unsigned char
+   5            
+   6          sbit RS=P2^5;           //寄存器选择位，将RS位定义为P2.0引脚
+   7          sbit RW=P2^4;           //读写选择位，将RW位定义为P2.1引脚
+   8          sbit E=P2^3;            //使能信号位，将E位定义为P2.2引脚
+   9          sbit BF=P0^7;           //忙碌标志位，，将BF位定义为P0.7引脚
+  10          //延时1ms函数
+  11          void delay1ms()
+  12          {
+  13   1              uchar i,j;      
+  14   1       //     for(i=0;i<10;i++)
+  15   1              for(j=0;j<33;j++);       
+  16   1      }
+*** WARNING C280 IN LINE 13 OF LCD1602.C: 'i': unreferenced local variable
+  17          //延时nms函数
+  18          void delaynms(int n)
+  19          {
+  20   1              int i;
+  21   1              for(i=0;i<n;i++)
+  22   1              delay1ms();
+  23   1      }
+  24          
+  25          //函数功能：判断液晶模块的忙碌状态，返回值：result。result=1，忙碌;result=0，不忙
+  26          bit BusyTest(void)
+  27          {
+  28   1          bit result;
+  29   1              RS=0;       //根据规定，RS为低电平，RW为高电平时，可以读状态
+  30   1          RW=1;
+  31   1          E=1;        //E=1，才允许读写
+  32   1          _nop_();   //空操作
+  33   1          _nop_();
+  34   1          _nop_(); 
+  35   1          _nop_();   //空操作四个机器周期，给硬件反应时间     
+  36   1          result=BF;  //将忙碌标志电平赋给result
+  37   1          E=0;         //将E恢复低电平
+  38   1          return result;
+  39   1      }
+  40          
+  41          //函数功能：将模式设置指令或显示地址写入液晶模块
+  42          void WriteInstruction (uchar dictate)
+  43          {   
+  44   1          while(BusyTest()==1);  
+  45   1               RS=0;                 
+  46   1               RW=0;   
+  47   1               E=0;                  
+  48   1                                 
+  49   1               _nop_();
+  50   1               _nop_();              
+  51   1               P0=dictate;           
+  52   1               _nop_();
+  53   1               _nop_();
+  54   1               _nop_();
+C51 COMPILER V9.00   LCD1602                                                               08/19/2015 23:47:23 PAGE 2   
+
+  55   1               _nop_();              
+  56   1               E=1;                  
+  57   1               _nop_();
+  58   1               _nop_();
+  59   1               _nop_();
+  60   1               _nop_();              
+  61   1                E=0;                 
+  62   1       }
+  63          
+  64          //函数功能：指定字符显示的实际地址
+  65          void WriteAddress(uchar x)
+  66          {
+  67   1          WriteInstruction(x|0x80); //显示位置的确定方法规定为"80H+地址码x"
+  68   1      }
+  69          
+  70          //函数功能：将数据(字符的标准ASCII码)写入液晶模块
+  71          void WriteData(uchar y)
+  72          {
+  73   1          while(BusyTest()==1);  
+  74   1                RS=1;           
+  75   1                RW=0;
+  76   1                E=0;         
+  77   1                         
+  78   1                P0=y;        
+  79   1                _nop_();
+  80   1                _nop_();
+  81   1                _nop_();
+  82   1           _nop_();      
+  83   1                E=1;         
+  84   1                _nop_();
+  85   1                _nop_();
+  86   1                _nop_();
+  87   1               _nop_();      
+  88   1               E=0;          
+  89   1      }
+  90          
+  91          void WriteString(uchar *a)
+  92          {
+  93   1              while(*a != '\0')       
+  94   1              {
+  95   2                      WriteData(*a);
+  96   2                      a++;
+  97   2              }
+  98   1      }
+  99          
+ 100          //函数功能：对LCD的显示模式进行初始化设置
+ 101          void LcdInitiate(void)
+ 102          {
+ 103   1          delaynms(15);              
+ 104   1          WriteInstruction(0x38);    //16*2显示，5*7点阵，8位数据
+ 105   1              delaynms(5);               
+ 106   1          WriteInstruction(0x38);
+ 107   1              delaynms(5);               
+ 108   1              WriteInstruction(0x38);    
+ 109   1              delaynms(5);               
+ 110   1              WriteInstruction(0x0c);    //显示开，关光标
+ 111   1              delaynms(5);               
+ 112   1              WriteInstruction(0x06);    //移动光标
+ 113   1              delaynms(5);               
+ 114   1              WriteInstruction(0x01);    //清除LCD的显示内容
+ 115   1              delaynms(5);             
+ 116   1      
+C51 COMPILER V9.00   LCD1602                                                               08/19/2015 23:47:23 PAGE 3   
+
+ 117   1       }
+ 118          
+ 119           void main(void)
+ 120          {
+ 121   1      
+ 122   1              uchar temp[] = "LCD1602 TEST";  
+ 123   1              uchar temp1[] = "By Beyonday";
+ 124   1      
+ 125   1              int i = 0;
+ 126   1      
+ 127   1              LcdInitiate();       //将液晶初始化
+ 128   1      //      WriteAddress(0x00);
+ 129   1      //      WriteData(' ');
+ 130   1      //      WriteAddress(0x02);  //写开始的显示地址,将在第1行第2列开始显示
+ 131   1      //      WriteString(temp) ;
+ 132   1      //      WriteAddress(0x45);  //写temp1的显示地址， 显示在第2行第6列
+ 133   1      //      WriteString(temp1) ;
+ 134   1      
+ 135   1              
+ 136   1              while(1)                 //死循环
+ 137   1              {
+ 138   2                              WriteAddress(0x00);
+ 139   2                              WriteData(' ');
+ 140   2                              WriteAddress(0x02);  //写开始的显示地址,将在第1行第2列开始显示
+ 141   2                              while(temp[i] != '\0')
+ 142   2                              {
+ 143   3                                      WriteData(temp[i]);
+ 144   3                                      i++;
+ 145   3                                      delaynms(1000); 
+ 146   3                              }
+ 147   2                              i = 0;
+ 148   2                              WriteAddress(0x45);  //写temp1的显示地址， 显示在第2行第6列
+ 149   2                              while(temp1[i] != '\0')
+ 150   2                              {
+ 151   3                                      WriteData(temp1[i]);
+ 152   3                                      i++;
+ 153   3                                      delaynms(1000); 
+ 154   3                              }
+ 155   2                              i = 0;
+ 156   2                              WriteInstruction(0x01); 
+ 157   2      
+ 158   2                              delaynms(1000);
+ 159   2                      
+ 160   2      
+ 161   2              }
+ 162   1      }
+ 163          
+ 164          
+ 165          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    328    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      26
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
