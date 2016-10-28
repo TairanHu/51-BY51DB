@@ -1,0 +1,71 @@
+C51 COMPILER V9.00   RELAY                                                                 09/09/2015 10:48:58 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE RELAY
+OBJECT MODULE PLACED IN RELAY.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE RELAY.c ROM(SMALL) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************
+   2          
+   3                                                          继电器通断实验
+   4                                                          
+   5                          连接方法：将继电器旁排针RLJP2用跳线帽短路               
+   6          
+   7          ********************************************************/
+   8          
+   9          
+  10          #include <reg52.h>
+  11          
+  12          sbit RELAY = P1^1;                      //定义控制继电器为P1^1口
+  13          
+  14          /***********************************************
+  15          
+  16                     延时函数    延时时间大致为100毫秒
+  17          
+  18          ************************************************/
+  19          void delay()
+  20          {
+  21   1              int i, j;
+  22   1              for(i = 0; i < 100; i++)
+  23   1              {
+  24   2                      for(j = 0; j < 110; j++) ;
+  25   2              }
+  26   1      }
+  27          
+  28          
+  29          /***********************************************
+  30          
+  31                    主函数
+  32          
+  33          ***********************************************/
+  34          void main()
+  35          {
+  36   1              while(1)
+  37   1              {
+  38   2                      RELAY = 1;              //继电器连通
+  39   2                      delay();                //延时
+  40   2                      RELAY = 0;              //继电器断开
+  41   2                      delay();                //延时
+  42   2              }       
+  43   1      }
+  44          
+  45          
+  46          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     39    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.00   RELAY                                                                 09/09/2015 10:48:58 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
