@@ -1,0 +1,9 @@
+"..\Obj\main.obj",
+"..\Obj\member.obj",
+"..\Obj\oled.obj",
+"..\Obj\flash.obj",
+"..\Obj\mySPI.obj",
+"..\Obj\led_Array.obj",
+"..\Obj\timer.obj" 
+TO "..\Obj\Test" 
+PRINT("..\Obj\Test.m51") RAMSIZE(256) 
