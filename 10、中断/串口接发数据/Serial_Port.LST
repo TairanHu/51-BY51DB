@@ -1,0 +1,95 @@
+C51 COMPILER V9.01   SERIAL_PORT                                                           07/12/2015 15:28:39 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE SERIAL_PORT
+OBJECT MODULE PLACED IN Serial_Port.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE Serial_Port.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /***************************************************
+   2          
+   3                          单片机向电脑发送数据
+   4          
+   5          
+   6          ****************************************************/
+   7          
+   8          #include <reg52.h>
+   9          
+  10          #define uchar unsigned char
+  11          
+  12          uchar temp;                //临时存储变量
+  13          uchar flag;        //串口中断标志位
+  14          
+  15          void delay_nms(int n)
+  16          {
+  17   1              int i, j;
+  18   1              for(i = 0; i < n; i++)
+  19   1              {
+  20   2                      for(j = 0; j < 110; j++) ;
+  21   2              }
+  22   1      }
+  23          
+  24          
+  25          void Serial_Port_Init()
+  26          {
+  27   1              TMOD = 0x20;       // 设定T1定时器的工作方式2
+  28   1              TH1 = 0xfd;                // T1定时器装初值
+  29   1              TL1 = 0xfd;                //
+  30   1              TR1 = 1;                   // 启动T1定时器
+  31   1              SM0 = 0;                   // 设定串口工作方式1
+  32   1              SM1 = 1;                   // 
+  33   1              REN = 1;                   // 允许串口接收
+  34   1              ES = 1;                    // 开串口中断
+  35   1              EA = 1;                    // 开总中断
+  36   1      
+  37   1      }
+  38          
+  39          void main()
+  40          {
+  41   1              Serial_Port_Init();
+  42   1      
+  43   1              while(1)
+  44   1              {
+  45   2                      if(flag)
+  46   2                      {
+  47   3                              SBUF = temp;                            //SUBF接受/发送缓冲器(又叫串行通信特殊功能寄存器)
+  48   3                      while(!TI);                             // 等特数据传送 (TI发送中断标志)
+  49   3                              TI = 0;                                 // 清除数据传送标志             
+  50   3                              flag = 0;
+  51   3                      }
+  52   2      
+  53   2                                                      
+  54   2      
+  55   2              }
+C51 COMPILER V9.01   SERIAL_PORT                                                           07/12/2015 15:28:39 PAGE 2   
+
+  56   1              
+  57   1      }
+  58          
+  59          
+  60          void serail() interrupt 4
+  61          {
+  62   1              RI = 0;
+  63   1              temp = SBUF;
+  64   1              flag = 1;
+  65   1      
+  66   1      }
+  67          
+  68          
+  69          
+  70          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     89    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

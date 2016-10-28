@@ -1,0 +1,3 @@
+"Timer0_Count.obj" 
+TO "Timer0_Count" 
+RAMSIZE(256) 

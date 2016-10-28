@@ -1,0 +1,170 @@
+C51 COMPILER V9.00   TIMER0_COUNT                                                          09/17/2015 12:11:24 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TIMER0_COUNT
+OBJECT MODULE PLACED IN Timer0_Count.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE Timer0_Count.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /**************************************************
+   2          
+   3                          使用定时器中断0计数，数码管显示
+   4          
+   5          ***************************************************/
+   6          
+   7          #include <reg52.h>
+   8          
+   9          #define uchar unsigned char
+  10          
+  11          sbit HC138A = P2^2;                     //定义译码器输入端A  在 P2.2 管脚上
+  12          sbit HC138B = P2^3;                     //定义译码器输入端B  在 P2.3 管脚上
+  13          sbit HC138C = P2^4;                     //定义译码器输入端C  在 P2.4 管脚上                     
+  14          
+  15          uchar code table[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 
+             -0x79, 0x71};
+  16          
+  17          uchar Count;
+  18          
+  19          int Num_High = 0 , Num_Low = 0;  //定义数字的高四位和低四位
+  20          
+  21          void delay_nms(int n)
+  22          {
+  23   1              int i, j;
+  24   1              for(i = 0; i < n; i++)
+  25   1              {
+  26   2                      for(j = 0; j < 110; j++) ;
+  27   2              }
+  28   1      }
+  29          
+  30          
+  31          /*************************************************
+  32          
+  33                                  定时器0初始化函数
+  34          
+  35          **************************************************/
+  36          void Timer0_Init()
+  37          {
+  38   1              TMOD = 0x01;                       // 设置定时器0的工作方式
+  39   1              TH0 = (65536 - 50000)/256;  // 对寄存器装入初值，高八位
+  40   1              TL0 = (65536 - 50000)%256;  // 低八位
+  41   1              ET0 = 1;                                   // 开启定时器0中断
+  42   1              TR0 = 1;                                   // 启动定时器0
+  43   1              EA = 1;                                    // 开总中断
+  44   1      }
+  45          
+  46          
+  47          
+  48          /**************************************************
+  49          
+  50                                          主函数
+  51          
+  52          ***************************************************/
+  53          
+  54          void main()
+C51 COMPILER V9.00   TIMER0_COUNT                                                          09/17/2015 12:11:24 PAGE 2   
+
+  55          {
+  56   1      //      int Num_High , Num_Low;  //定义数字的高四位和低四位
+  57   1      
+  58   1              uchar LED_Out[8] = {0};
+  59   1      
+  60   1              Timer0_Init();     // 初始化定时器
+  61   1      
+  62   1              while(1)                   // 等待中断的发生
+  63   1              {
+  64   2                      if(Num_Low >= 10000)
+  65   2                      {
+  66   3                              Num_High++;
+  67   3                              Num_Low %= 1000;
+  68   3                      }
+  69   2      
+  70   2                      LED_Out[0] = Num_Low%10;                        //取出数字个位
+  71   2                      LED_Out[1] = Num_Low/10%10;         //取出数字十位
+  72   2                      LED_Out[2] = Num_Low/100%10;        //取出数字百位
+  73   2                      LED_Out[3] = Num_Low/1000%10;       //取出数字千位
+  74   2                                                  
+  75   2                      LED_Out[4] = Num_High%10;           //取出数字万位
+  76   2                      LED_Out[5] = Num_High/10%10;        //取出数字十万位
+  77   2                      LED_Out[6] = Num_High/100%10;       //取出数字百万位
+  78   2                      LED_Out[7] = Num_High/1000%10;      //取出数字千万位
+  79   2      
+  80   2      
+  81   2                      HC138C = 0; HC138B = 0; HC138A = 0;     //选中数码管第一位
+  82   2                      P1 = table[LED_Out[7]];                 //显示数字
+  83   2                      delay_nms(1);                           //延时
+  84   2                      P1 = 0x00;                                                              //消影
+  85   2                                                              
+  86   2                      HC138C = 0; HC138B = 0; HC138A = 1;     //选中数码管第二位
+  87   2                      P1 = table[LED_Out[6]];                 //显示数字
+  88   2                      delay_nms(1);                           //延时
+  89   2                      P1 = 0x00;                                                              //消影
+  90   2                                                              
+  91   2                      HC138C = 0; HC138B = 1; HC138A = 0;     //选中数码管第三位
+  92   2                      P1 = table[LED_Out[5]];                 //显示数字
+  93   2                      delay_nms(1);                           //延时
+  94   2                      P1 = 0x00;                                                              //消影
+  95   2                                                              
+  96   2                      HC138C = 0; HC138B = 1; HC138A = 1;     //选中数码管第四位
+  97   2                      P1 = table[LED_Out[4]];                 //显示数字
+  98   2                      delay_nms(1);                           //延时
+  99   2                      P1 = 0x00;                                                              //消影
+ 100   2                                                              
+ 101   2                      HC138C = 1; HC138B = 0; HC138A = 0;     //选中数码管第五位
+ 102   2                      P1 = table[LED_Out[3]];                 //显示数字
+ 103   2                      delay_nms(1);                           //延时
+ 104   2                                                              
+ 105   2                      HC138C = 1; HC138B = 0; HC138A = 1;     //选中数码管第六位
+ 106   2                      P1 = table[LED_Out[2]];                 //显示数字
+ 107   2                      delay_nms(1);                           //延时
+ 108   2                      P1 = 0x00;                                                              //消影
+ 109   2                                                              
+ 110   2                      HC138C = 1; HC138B = 1; HC138A = 0;     //选中数码管第七位
+ 111   2                      P1 = table[LED_Out[1]];                 //显示数字
+ 112   2                      delay_nms(1);                           //延时
+ 113   2                      P1 = 0x00;                                                              //消影
+ 114   2                                                              
+ 115   2                      HC138C = 1; HC138B = 1; HC138A = 1;     //选中数码管第八位
+ 116   2                      P1 = table[LED_Out[0]];                 //显示数字
+C51 COMPILER V9.00   TIMER0_COUNT                                                          09/17/2015 12:11:24 PAGE 3   
+
+ 117   2                      delay_nms(1);                           //延时
+ 118   2                      P1 = 0x00;                                                              //消影
+ 119   2              
+ 120   2              }
+ 121   1      }
+ 122          
+ 123          
+ 124          /**************************************************
+ 125          
+ 126                                     定时器0中断服务程序
+ 127          
+ 128          ***************************************************/
+ 129          
+ 130          void Timer0() interrupt 1
+ 131          {
+ 132   1              TH0 = (65536 - 10000)/256;  // 对寄存器装入初值，高八位
+ 133   1              TL0 = (65536 - 10000)%256;  // 低八位
+ 134   1      
+ 135   1              Num_Low++;
+ 136   1      
+ 137   1      }
+ 138          
+ 139          
+ 140          
+ 141          
+ 142          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    404    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,113 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/12/2015  10:30:27  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE Timer_Interrupt0.obj TO Timer_Interrupt0 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  Timer_Interrupt0.obj (TIMER_INTERRUPT0)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  Timer_Interrupt0 (TIMER_INTERRUPT0)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?TIMER_INTERRUPT0
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?MAIN?TIMER_INTERRUPT0
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     001EH     UNIT         ?PR?TIMER0?TIMER_INTERRUPT0
+            CODE    002CH     0010H     UNIT         ?PR?TIMER0_INIT?TIMER_INTERRUPT0
+            CODE    003CH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   Timer_Interrupt0 (TIMER_INTERRUPT0)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?TIMER_INTERRUPT0
+
+?PR?MAIN?TIMER_INTERRUPT0
+  +--> ?PR?TIMER0_INIT?TIMER_INTERRUPT0
+
+
+
+SYMBOL TABLE OF MODULE:  Timer_Interrupt0 (TIMER_INTERRUPT0)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TIMER_INTERRUPT0
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/12/2015  10:30:27  PAGE 2
+
+
+  B:00A8H.7       PUBLIC        EA
+  D:0008H         PUBLIC        Count
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  C:002CH         PUBLIC        Timer0_Init
+  C:000EH         PUBLIC        Timer0
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          TIMER0_INIT
+  C:002CH         LINE#         16
+  C:002CH         LINE#         17
+  C:002CH         LINE#         18
+  C:002FH         LINE#         19
+  C:0032H         LINE#         20
+  C:0035H         LINE#         21
+  C:0037H         LINE#         22
+  C:0039H         LINE#         23
+  C:003BH         LINE#         24
+  -------         ENDPROC       TIMER0_INIT
+  -------         PROC          MAIN
+  C:0003H         LINE#         34
+  C:0003H         LINE#         35
+  C:0003H         LINE#         36
+  C:0006H         LINE#         37
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:000EH         LINE#         47
+  C:0012H         LINE#         49
+  C:0015H         LINE#         50
+  C:0018H         LINE#         52
+  C:001AH         LINE#         53
+  C:0021H         LINE#         54
+  C:0021H         LINE#         55
+  C:0024H         LINE#         56
+  C:0027H         LINE#         57
+  C:0027H         LINE#         59
+  -------         ENDPROC       TIMER0
+  -------         ENDMOD        TIMER_INTERRUPT0
+
+Program Size: data=10.0 xdata=0 code=69
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

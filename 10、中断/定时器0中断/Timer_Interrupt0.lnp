@@ -1,0 +1,3 @@
+"Timer_Interrupt0.obj" 
+TO "Timer_Interrupt0" 
+RAMSIZE(256) 
