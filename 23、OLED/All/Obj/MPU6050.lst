@@ -1,0 +1,79 @@
+C51 COMPILER V9.00   MPU6050                                                               09/01/2015 19:29:57 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MPU6050
+OBJECT MODULE PLACED IN ..\Obj\MPU6050.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE ..\src\MPU6050.c COMPACT BROWSE INCDIR(..\src;..\User) DEBUG OBJECTEXTEND P
+                    -RINT(..\Obj\MPU6050.lst) OBJECT(..\Obj\MPU6050.obj)
+
+line level    source
+
+   1          #include "mpu6050.h"
+   2          
+   3          void MPU6050_Test(void)
+   4          {
+   5   1              uchar temp=0;
+   6   1              temp=Device_Read_Byte(Mpu6050_IIC_ADD,WHO_AM_I);
+   7   1              
+   8   1              if(temp==Mpu6050_ID)
+   9   1              {
+  10   2                      Show_f8x16str(0,0,"6050 Test Pass!");
+  11   2                      Show_f8x16str(0,2,"ID:");
+  12   2                      Show_Num_f8x16(24,2,temp,3);
+  13   2              }
+  14   1              else
+  15   1              {
+  16   2                      Show_f8x16str(0,0,"MPU6050 Test Fail!");
+  17   2                      Show_f8x16str(0,2,"ID:");
+  18   2                      Show_Num_f8x16(24,2,temp,3);
+  19   2              }
+  20   1      }
+  21          
+  22          void MPU6050_Init(void)                          //MPU6050初始化
+  23          {
+  24   1              IIC_Init();
+  25   1              Device_Write_Byte(0xd0,PWR_MGMT_1,0x00);//解除休眠，开启内部温度传感器，使用内部8M晶振
+  26   1              Device_Write_Byte(0xd0,SMPLRT_DIV,0x07);//设置采样速率分频为8分频，1k/8=125hz
+  27   1              Device_Write_Byte(0xd0,CONFIG,0x06);//设置低通滤波器带宽为5HZ，陀螺仪输出频率为1Khz
+  28   1              Device_Write_Byte(0xd0,GYRO_CONFIG, 0x18);//设置陀螺仪测量范围+-2000度/s，不自检
+  29   1              Device_Write_Byte(0xd0,ACCEL_CONFIG,0x09);//设置加速度计范围为+—4g，不自检，高通滤波器截至频率为5hz    
+  30   1              Delay_ms(10);
+  31   1      }
+  32          
+  33          void MPU6050_Read_All_Dat(void)   //连续读取
+  34          {
+  35   1              uchar i;
+  36   1              IIC_Start();
+  37   1              IIC_Send_Byte(0xd0);//写入设备ID及写信号
+  38   1              IIC_Wait_Ack();
+  39   1              IIC_Send_Byte(ACCEL_XOUT_H);//写地址
+  40   1              IIC_Wait_Ack();
+  41   1      
+  42   1              IIC_Start();
+  43   1              IIC_Send_Byte(0xd1);//写入设备ID及读信号
+  44   1              IIC_Wait_Ack();
+  45   1      
+  46   1              for(i=0;i<13;i++)
+  47   1              {
+  48   2                      MPU6050_Data[i]=IIC_Read_Byte(1);//获得数据，发送ACK
+  49   2              }
+  50   1              MPU6050_Data[13]=IIC_Read_Byte(0);
+  51   1      
+  52   1              IIC_Stop();//                   
+  53   1      }  
+
+C51 COMPILER V9.00   MPU6050                                                               09/01/2015 19:29:57 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    194    ----
+   CONSTANT SIZE    =     39    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----       2
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

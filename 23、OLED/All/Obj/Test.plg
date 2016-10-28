@@ -1,0 +1,469 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\fz\Desktop\≤‚ ‘(CK)\All\User\Test.uvproj
+Project File Date:  07/14/2015
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4771
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling member.c...
+compiling oled.c...
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling member.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling oled.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 40 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling member.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling oled.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 40 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling member.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+compiling oled.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 40 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4782
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 17 Warning(s).
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+main.c - 0 Error(s), 11 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4782
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+compiling main.c...
+includes.h(11): warning C318: can't open file 'nrf24l01.h'
+includes.h(13): warning C318: can't open file 'myspi.h'
+includes.h(14): warning C318: can't open file 'uart.h'
+includes.h(15): warning C318: can't open file '1602.h'
+includes.h(17): warning C318: can't open file 'dig_c.h'
+includes.h(18): warning C318: can't open file 'hc165.h'
+includes.h(20): warning C318: can't open file 'myiic.h'
+includes.h(21): warning C318: can't open file 'mpu6050.h'
+includes.h(22): warning C318: can't open file 'timer.h'
+includes.h(23): warning C318: can't open file 'flash.h'
+includes.h(24): warning C318: can't open file 'key.h'
+main.c - 0 Error(s), 11 Warning(s).
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling member.c...
+compiling oled.c...
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4782
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4782
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling member.c...
+compiling oled.c...
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4782
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=43 code=4803
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 5 Warning(s).
+compiling oled.c...
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+..\src\oled.c - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OLED_TEST?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=43 code=4803
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 5 Warning(s).
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling member.c...
+compiling oled.c...
+..\SRC\OLED.C(146): warning C235: parameter 3: different types
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_FILL?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F6X8STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F8X16?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_NUM_F6X8?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_F8X16STR?OLED
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOW_PICTURE?OLED
+Program Size: data=9.0 xdata=49 code=4769
+creating hex file from "..\Obj\Test"...
+"..\Obj\Test" - 0 Error(s), 7 Warning(s).

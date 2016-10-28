@@ -1,0 +1,52 @@
+C51 COMPILER V9.00   DIG_C                                                                 09/01/2015 19:29:56 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DIG_C
+OBJECT MODULE PLACED IN ..\Obj\dig_c.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE ..\src\dig_c.c COMPACT BROWSE INCDIR(..\src;..\User) DEBUG OBJECTEXTEND PRI
+                    -NT(..\Obj\dig_c.lst) OBJECT(..\Obj\dig_c.obj)
+
+line level    source
+
+   1          #include "dig_c.h"
+   2          
+   3          void DigC_Test(void)
+   4          {
+   5   1              uchar i,j;
+   6   1      
+   7   1                      for(i=0;i<8;i++)
+   8   1                      {
+   9   2                              DIG_C_SEL(i);
+  10   2                              DIG_C_DATA=F_DigC[i];
+  11   2                              Delay_ms(1);
+  12   2                              DIG_C_DATA=0x00;//ÏûÒþ
+  13   2                      }
+  14   1      
+  15   1              
+  16   1      //      DIG_C_SEL(0);
+  17   1      //      DIG_C_DATA=F_DigC[0];
+  18   1      //      Delay_ms(1);
+  19   1      //      DIG_C_SEL(1);
+  20   1      //      DIG_C_DATA=F_DigC[1];
+  21   1      //      Delay_ms(1);
+  22   1              //DIG_C_SEL(2);
+  23   1              ////DIG_C_DATA=F_DigC[2];
+  24   1              //Delay_ms(1);
+  25   1              
+  26   1              
+  27   1      }
+*** WARNING C280 IN LINE 5 OF ..\SRC\DIG_C.C: 'j': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     49    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----       2
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
